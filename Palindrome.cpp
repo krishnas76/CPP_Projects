@@ -1,3 +1,8 @@
+/*This program checks if a user-inputted phrase is a palindrome.
+ *Author: Krishna Srikanth
+ *Date: 9/16/22
+ */
+
 #include <iostream>
 #include <cstring>
 #include <ctype.h>

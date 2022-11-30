@@ -7,7 +7,11 @@
 #include <cstring>
 #include <ctype.h>
 #include <vector>
+
+#ifndef MEDIA_H
+#define MEDIA_H
 #include "Media.h"
+#endif
 
 using namespace std;
 

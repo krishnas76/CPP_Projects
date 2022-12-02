@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
+//#ifndef MEDIA_H
+//#define MEDIA_H
 #include "Media.h"
-#endif
+//#endif
 
-#ifndef MUSIC_H
-#define MUSIC_H
+//#ifndef MUSIC_H
+//#define MUSIC_H
 #include "Music.h"
-#endif
+//#endif
 
 using namespace std;
 
@@ -24,14 +24,14 @@ Music::Music(char* newtitle, int newyear, char* newartist, int newduration, char
   strcpy(publisher, newpublisher);
 }
 
-virtual char* Music::getArtist() {
+char* Music::getArtist() {
   return artist;
 }
 
-virtual int Music::getDuration() {
+int Music::getDuration() {
   return duration;
 }
 
-virtual char* Music::getPublisher() {
+char* Music::getPublisher() {
   return publisher;
 }

@@ -1,11 +1,16 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
-#include "Media.h"
-#endif
+//#ifndef MEDIA_H
+//#define MEDIA_H
+//#include "Media.h"
+//#endif
 
+//#ifndef GAME_H
+//#define GAME_H
+
+#include "Media.h"
+//#endif
 using namespace std;
 
 class Game : public Media {
@@ -15,8 +20,9 @@ class Game : public Media {
   virtual char* getPublisher();
   virtual int getRating();
 
- private:
+  //private:
   char* publisher;
   float rating;
 };
 
+//#endif

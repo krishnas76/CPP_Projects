@@ -1,10 +1,13 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
+//#ifndef MEDIA_H
+//#define MEDIA_H
 #include "Media.h"
-#endif
+//#endif
+
+//#ifndef MUSIC_H
+//#define MUSIC_H
 
 using namespace std;
 
@@ -16,8 +19,10 @@ class Music : public Media {
   virtual int getDuration();
   virtual char* getPublisher();
 
- private:
+  //private:
   char* artist;
   int duration;
   char* publisher;
 };
+
+//#endif

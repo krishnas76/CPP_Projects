@@ -1,10 +1,13 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
+//#ifndef MEDIA_H
+//#define MEDIA_H
 #include "Media.h"
-#endif
+//#endif
+
+//#ifndef MOVIE_H
+//#define MOVIE_H
 
 using namespace std;
 
@@ -16,8 +19,10 @@ class Movie : public Media {
   virtual int getDuration();
   virtual float getRating();
 
- private:
+  //private:
   char* director;
   int duration;
   float rating;
 };
+
+//#endif

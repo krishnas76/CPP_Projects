@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
+//#ifndef MEDIA_H
+//#define MEDIA_H
 #include "Media.h"
-#endif
+//#endif
 
-#ifndef MOVIE_H
-#define MOVIE_H
+//#ifndef MOVIE_H
+//#define MOVIE_H
 #include "Movie.h"
-#endif
+//#endif
 
 using namespace std;
 
@@ -20,17 +20,17 @@ Movie::Movie(char* newtitle, int newyear, char* newdirector, int newduration, fl
   director = new char[81];
   strcpy(director, newdirector);
   duration = newduration;
-  rating = newrating
+  rating = newrating;
 }
 
-virtual char* Movie::getDirector() {
+char* Movie::getDirector() {
   return director;
 }
 
-virtual int Movie::getDuration() {
+int Movie::getDuration() {
   return duration;
 }
 
-virtual char* Movie::getRating() {
+float Movie::getRating() {
   return rating;
 }

@@ -1,12 +1,15 @@
 #include <iostream>
 #include <cstring>
 
-#ifndef MEDIA_H
-#define MEDIA_H
+//#ifndef MEDIA_H
+//#define MEDIA_H
 #include "Media.h"
-#endif
+//#endif
 
 using namespace std;
+
+Media::Media() {
+}
 
 Media::Media(char* newtitle, int newyear) {
   title = new char[81];
@@ -14,10 +17,10 @@ Media::Media(char* newtitle, int newyear) {
   year = newyear;
 }
 
-virtual char* Media::getTitle() {
+char* Media::getTitle() {
   return title;
 }
 
-virtual int Media::getYear() {
+int Media::getYear() {
   return year;
 }

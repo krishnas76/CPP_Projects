@@ -16,7 +16,7 @@ using namespace std;
 class Game : public Media {
  public:
   Game(char*, int, char*, float);
-
+  virtual ~Game();
   virtual char* getPublisher();
   virtual int getRating();
 

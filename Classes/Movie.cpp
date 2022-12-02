@@ -21,6 +21,7 @@ Movie::Movie(char* newtitle, int newyear, char* newdirector, int newduration, fl
   strcpy(director, newdirector);
   duration = newduration;
   rating = newrating;
+  type = 3;
 }
 
 char* Movie::getDirector() {

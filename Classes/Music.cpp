@@ -22,6 +22,7 @@ Music::Music(char* newtitle, int newyear, char* newartist, int newduration, char
   duration = newduration;
   publisher = new char[81];
   strcpy(publisher, newpublisher);
+  type = 2;
 }
 
 char* Music::getArtist() {

@@ -20,6 +20,7 @@ Game::Game(char* newtitle, int newyear, char* newpublisher, float newrating) {
   publisher = new char[81];
   strcpy(publisher, newpublisher);
   rating = newrating;
+  type = 1;
 }
 
 char* Game::getPublisher() {
@@ -28,4 +29,9 @@ char* Game::getPublisher() {
 
 int Game::getRating() {
   return rating;
+}
+
+Game::~Game() {
+  delete title;
+  delete publisher;
 }

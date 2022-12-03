@@ -1,28 +1,22 @@
 #include <iostream>
 #include <cstring>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
-//#include "Media.h"
-//#endif
-
-//#ifndef GAME_H
-//#define GAME_H
-
 #include "Media.h"
-//#endif
+
 using namespace std;
 
 class Game : public Media {
  public:
+
+  //contructor
   Game(char*, int, char*, float);
+
+  //functions
   virtual ~Game();
   virtual char* getPublisher();
   virtual int getRating();
 
-  //private:
+  //variables
   char* publisher;
   float rating;
 };
-
-//#endif

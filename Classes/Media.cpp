@@ -1,13 +1,11 @@
 #include <iostream>
 #include <cstring>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
 #include "Media.h"
-//#endif
 
 using namespace std;
 
+//constructors
 Media::Media() {
 }
 
@@ -17,6 +15,7 @@ Media::Media(char* newtitle, int newyear) {
   year = newyear;
 }
 
+//getters
 char* Media::getTitle() {
   return title;
 }
@@ -28,6 +27,6 @@ int Media::getType() {
   return type;
 }
 
+//destructor
 Media::~Media() {
-  delete title;
 }

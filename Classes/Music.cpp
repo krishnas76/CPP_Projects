@@ -1,18 +1,12 @@
 #include <iostream>
 #include <cstring>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
 #include "Media.h"
-//#endif
-
-//#ifndef MUSIC_H
-//#define MUSIC_H
 #include "Music.h"
-//#endif
 
 using namespace std;
 
+//constructor
 Music::Music(char* newtitle, int newyear, char* newartist, int newduration, char* newpublisher) {
   title = new char[81];
   strcpy(title, newtitle);
@@ -25,6 +19,7 @@ Music::Music(char* newtitle, int newyear, char* newartist, int newduration, char
   type = 2;
 }
 
+//getters
 char* Music::getArtist() {
   return artist;
 }
@@ -35,4 +30,11 @@ int Music::getDuration() {
 
 char* Music::getPublisher() {
   return publisher;
+}
+
+//destructor
+Music::~Music() {
+  delete title;
+  delete artist;
+  delete publisher;
 }

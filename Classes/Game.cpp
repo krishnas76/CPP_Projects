@@ -1,18 +1,11 @@
 #include <iostream>
 #include <cstring>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
-//#include "Media.h"
-//#endif
-
-//#ifndef GAME_H
-//#define GAME_H
 #include "Game.h"
-//#endif
 
 using namespace std;
 
+//constructor
 Game::Game(char* newtitle, int newyear, char* newpublisher, float newrating) {
   title = new char[81];
   strcpy(title, newtitle);
@@ -23,6 +16,7 @@ Game::Game(char* newtitle, int newyear, char* newpublisher, float newrating) {
   type = 1;
 }
 
+//getters
 char* Game::getPublisher() {
   return publisher;
 }
@@ -31,6 +25,7 @@ int Game::getRating() {
   return rating;
 }
 
+//destructors
 Game::~Game() {
   delete title;
   delete publisher;

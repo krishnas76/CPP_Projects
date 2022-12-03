@@ -1,32 +1,18 @@
 /*This program creates a digital media database
  *Author: Krishna Srikanth
- *Date:
+ *Date: 12/2/22
  */
 
 #include <iostream>
 #include <cstring>
 #include <ctype.h>
 #include <vector>
+#include <iomanip>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
 #include "Media.h"
-//#endif
-
-//#ifndef GAME_H
-//#define GAME_H
 #include "Game.h"
-//#endif
-
-//#ifndef MUSIC_H
-//#define MUSIC_H
 #include "Music.h"
-//#endif
-
-//#ifndef MOVIE_H
-//#define MOVIE_H
 #include "Movie.h"
-//#endif
 
 using namespace std;
 
@@ -37,13 +23,6 @@ int main() {
   //initializes Studentlist vector
   vector<Media*> *Database = new vector<Media*>();
 
-  //test
-  //char* title_test = new char[81];
-  //strcpy(title_test, "Black Panther");
-  //int year_test = 2005;
-  //Media* test = new Media(title_test, year_test);
-  //cout << test->getTitle() << endl;
-  
   cout << "This is Media Database." << endl;
 
   //user command loop
@@ -60,8 +39,10 @@ int main() {
       char type[81];
       cin.getline(type, 80, '\n'); //take in user command
 
-      if (strcmp(type, "VIDEOGAME") == 0) {
+      if (strcmp(type, "VIDEOGAME") == 0) { //Video game
 	//add a video game
+
+	//take in input
 	char title[81];
 	int year;
 	char publisher[81];
@@ -78,12 +59,16 @@ int main() {
 	cout << "Rating:  ";
 	cin >> rating;
 	cin.get();
+
+	//add game to Database
 	Game* game = new Game(title, year, publisher, rating);
 	Database->push_back(game);
 	cout << "Game added to database." << endl;
       }
-      else if (strcmp(type, "MUSIC") == 0) {
+      else if (strcmp(type, "MUSIC") == 0) { //Music
 	//add music
+
+	//take in input
         char title[81];
         int year;
         char artist[81];
@@ -104,13 +89,17 @@ int main() {
         cout << "Publisher:  ";
         cin.get(publisher, 80);
         cin.get();
+
+	//add music to Database
         Music* music = new Music(title, year, artist, duration, publisher);
         Database->push_back(music);
         cout << "Music added to database." << endl;
 
       }
-      else if (strcmp(type, "MOVIE") == 0) {
+      else if (strcmp(type, "MOVIE") == 0) { //Movie
 	//add movie
+
+	//take in input
         char title[81];
         int year;
         char director[81];
@@ -131,12 +120,14 @@ int main() {
         cout << "Rating:  ";
         cin >> rating;
         cin.get();
+
+	//add movie to Database
         Movie* movie = new Movie(title, year, director, duration, rating);
         Database->push_back(movie);
         cout << "Movie added to database." << endl;
 
       }
-      else {
+      else { //input is invalid
 	cout << "Invalid input." << endl;
       }
     }
@@ -168,10 +159,15 @@ int main() {
 }
 
 void search(vector<Media*> *Database) {
+
+  //take user input
   cout << "Would you like to search by title or year? Type \"TITLE\" or \"YEAR\"" << endl;
   char search[81];
   cin.getline(search, 80, '\n'); //take in user command
+
+  //search by title
   if (strcmp(search, "TITLE") == 0) {
+    //take user input
     char title[81];
     cout << "Enter the title you want to search for: " << endl;
     cin.getline(title, 80, '\n'); //take in user command
@@ -179,7 +175,7 @@ void search(vector<Media*> *Database) {
     for (int i = 0; i < Database->size(); i++) {
       if (strcmp(Database->at(i)->getTitle(), title) == 0) {
 	if (Database->at(i)->getType() == 1) { //video game
-	  Game* game = static_cast<Game*>(Database->at(i));
+	  Game* game = static_cast<Game*>(Database->at(i)); //cast to Game
 	  cout << "Media found!" << endl;
 	  cout << "Type: Video game" << endl;
 	  cout << "Title: " << game->getTitle() << endl;
@@ -188,7 +184,7 @@ void search(vector<Media*> *Database) {
 	  cout << "Rating: " << game->getRating() << endl;
 	}
 	if (Database->at(i)->getType() == 2) { //music
-	  Music* music = static_cast<Music*>(Database->at(i));
+	  Music* music = static_cast<Music*>(Database->at(i)); //cast to Music
 	  cout << "Media found!" << endl;
 	  cout << "Type: Music" << endl;
 	  cout << "Title: " << music->getTitle() << endl;
@@ -198,7 +194,7 @@ void search(vector<Media*> *Database) {
 	  cout << "Publisher: " << music->getPublisher() << endl;
 	}
 	if (Database->at(i)->getType() == 3) { //movie
-	  Movie* movie = static_cast<Movie*>(Database->at(i));
+	  Movie* movie = static_cast<Movie*>(Database->at(i)); //cast to Movie
 	  cout << "Media found!" << endl;
 	  cout << "Type: Movie" << endl;
 	  cout << "Title: " << movie->getTitle() << endl;
@@ -210,11 +206,12 @@ void search(vector<Media*> *Database) {
 	found = true;
       }
     }
-    if (found == false) {
+    if (found == false) { //if nothing is found
       cout << "Nothing found." << endl;
     }
   }
-  else if (strcmp(search, "YEAR") == 0) {
+  else if (strcmp(search, "YEAR") == 0) { //search by year
+    //take in user input
     int year;
     cout << "Enter the year you want to search for: " << endl;
     cin >> year; //take in user command
@@ -223,7 +220,7 @@ void search(vector<Media*> *Database) {
     for (int i = 0; i < Database->size(); i++) {
       if (Database->at(i)->getYear() == year) {
 	if (Database->at(i)->getType() == 1) { //video game
-	  Game* game = static_cast<Game*>(Database->at(i));
+	  Game* game = static_cast<Game*>(Database->at(i)); //cast to Game
 	  cout << "Media found!" << endl;
 	  cout << "Type: Video game" << endl;
 	  cout << "Title: " << game->getTitle() << endl;
@@ -232,7 +229,7 @@ void search(vector<Media*> *Database) {
 	  cout << "Rating: " << game->getRating() << endl;
 	}
 	if (Database->at(i)->getType() == 2) { //music
-	  Music* music = static_cast<Music*>(Database->at(i));
+	  Music* music = static_cast<Music*>(Database->at(i)); //cast to Music
 	  cout << "Media found!" << endl;
 	  cout << "Type: Music" << endl;
 	  cout << "Title: " << music->getTitle() << endl;
@@ -242,7 +239,7 @@ void search(vector<Media*> *Database) {
 	  cout << "Publisher: " << music->getPublisher() << endl;
 	}
 	if (Database->at(i)->getType() == 3) { //movie
-	  Movie* movie = static_cast<Movie*>(Database->at(i));
+	  Movie* movie = static_cast<Movie*>(Database->at(i)); //cast to Movie
 	  cout << "Media found!" << endl;
 	  cout << "Type: Movie" << endl;
 	  cout << "Title: " << movie->getTitle() << endl;
@@ -254,7 +251,7 @@ void search(vector<Media*> *Database) {
 	found = true;
       }
     }
-    if (found == false) {
+    if (found == false) { //if not found
       cout << "Nothing found." << endl;
     }
     
@@ -265,63 +262,66 @@ void search(vector<Media*> *Database) {
 }
 
 void deleteMedia(vector<Media*> *Database) {
+  //take in title or year
   cout << "Would you like to delete by title or year? Type \"TITLE\" or \"YEAR\"" << endl;
   char search[81];
   cin.getline(search, 80, '\n'); //take in user command
-  if (strcmp(search, "TITLE") == 0) {
+  if (strcmp(search, "TITLE") == 0) { //delete by title
     char title[81];
     cout << "Enter the title you want to delete: " << endl;
     cin.getline(title, 80, '\n'); //take in user command
     bool found = false;
-    for (int i = 0; i < Database->size(); i++) {
-      if (strcmp(Database->at(i)->getTitle(), title) == 0) {
-	if (Database->at(i)->getType() == 1) { //video game
-	  cout << "Video game found. Would like to delete \"" << Database->at(i)->getTitle() << "\"? Type y/n" << endl;
-	  char del[81];
-	  cin.getline(del, 80, '\n');
-	  if (strcmp(del, "y") == 0) {
-	    //Database->at(i)->~Media();
-	    Game* game = static_cast<Game*>(Database->at(i));
-	    delete *(Database->begin()+i);
-	    Database->erase(Database->begin()+i);
-	    game->~Game();
-	  }
-	  
-	}
-	if (Database->at(i)->getType() == 2) { //music
-	  Music* music = static_cast<Music*>(Database->at(i));
-	}
-	if (Database->at(i)->getType() == 3) { //movie
-	  Movie* movie = static_cast<Movie*>(Database->at(i));
-	}
+
+    //use iterator
+    vector<Media*>::iterator it;
+    int index = 0;
+    for (it = Database->begin(); it < Database->end(); it++) {
+      if (strcmp((*it)->getTitle(), title) == 0) {
 	found = true;
+	cout << "Media found. Would like to delete \"" << (*it)->getTitle() << "\"? Type y/n" << endl;
+	char del[81];
+	cin.getline(del, 80, '\n');
+	if (strcmp(del, "y") == 0) {
+	  //delete media
+	  delete *it;
+	  Database->erase(Database->begin()+index);
+	  cout << "Media deleted." << endl;
+	  break;
+	}
       }
+      index++;
     }
-    if (found == false) {
+    if (found == false) { //nothing found
       cout << "Nothing found." << endl;
     }
   }
-  else if (strcmp(search, "YEAR") == 0) {
+  else if (strcmp(search, "YEAR") == 0) { //delete by year
     int year;
     cout << "Enter the year you want to search for: " << endl;
     cin >> year; //take in user command
     cin.get();
     bool found = false;
-    for (int i = 0; i < Database->size(); i++) {
-      if (Database->at(i)->getYear() == year) {
-	if (Database->at(i)->getType() == 1) { //video game
-	  Game* game = static_cast<Game*>(Database->at(i));
-	}
-	if (Database->at(i)->getType() == 2) { //music
-	  Music* music = static_cast<Music*>(Database->at(i));
-	}
-	if (Database->at(i)->getType() == 3) { //movie
-	  Movie* movie = static_cast<Movie*>(Database->at(i));
-	}
-	found = true;
+
+    //use iterator
+    vector<Media*>::iterator it;
+    int	index =	0;
+    for	(it = Database->begin(); it < Database->end(); it++) {
+      if ((*it)->getYear() == year) {
+	found =	true;
+	cout << "Media found. Would like to delete \"" << (*it)->getTitle() << "\"? Type y/n" << endl;
+        char del[81];
+        cin.getline(del, 80, '\n');
+        if (strcmp(del, "y") == 0) {
+	  //delete media
+	  delete *it;
+          Database->erase(Database->begin()+index);
+          cout << "Media deleted." << endl;
+          break;
+        }
       }
+      index++;
     }
-    if (found == false) {
+    if (found == false) { //if nothing found
       cout << "Nothing found." << endl;
     }
     

@@ -1,18 +1,12 @@
 #include <iostream>
 #include <cstring>
 
-//#ifndef MEDIA_H
-//#define MEDIA_H
 #include "Media.h"
-//#endif
-
-//#ifndef MOVIE_H
-//#define MOVIE_H
 #include "Movie.h"
-//#endif
 
 using namespace std;
 
+//constructor
 Movie::Movie(char* newtitle, int newyear, char* newdirector, int newduration, float newrating) {
   title = new char[81];
   strcpy(title, newtitle);
@@ -24,6 +18,7 @@ Movie::Movie(char* newtitle, int newyear, char* newdirector, int newduration, fl
   type = 3;
 }
 
+//getters
 char* Movie::getDirector() {
   return director;
 }
@@ -34,4 +29,10 @@ int Movie::getDuration() {
 
 float Movie::getRating() {
   return rating;
+}
+
+//destructor
+Movie::~Movie() {
+  delete title;
+  delete director;
 }

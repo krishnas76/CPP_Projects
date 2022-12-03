@@ -31,6 +31,7 @@
 using namespace std;
 
 void search(vector<Media*> *Database);
+void deleteMedia(vector<Media*> *Database);
 
 int main() {
   //initializes Studentlist vector
@@ -147,7 +148,7 @@ int main() {
     
     //delete
     else if (strcmp(input, "DELETE") == 0) {
-      
+      deleteMedia(Database);
     }
 
     //quit
@@ -249,6 +250,73 @@ void search(vector<Media*> *Database) {
 	  cout << "Director: " << movie->getDirector() << endl;
 	  cout << "Duration: " << movie->getDuration() << endl;
 	  cout << "Rating: " << movie->getRating() << endl;
+	}
+	found = true;
+      }
+    }
+    if (found == false) {
+      cout << "Nothing found." << endl;
+    }
+    
+  }
+  else {
+    cout << "Invalid input." << endl;
+  }
+}
+
+void deleteMedia(vector<Media*> *Database) {
+  cout << "Would you like to delete by title or year? Type \"TITLE\" or \"YEAR\"" << endl;
+  char search[81];
+  cin.getline(search, 80, '\n'); //take in user command
+  if (strcmp(search, "TITLE") == 0) {
+    char title[81];
+    cout << "Enter the title you want to delete: " << endl;
+    cin.getline(title, 80, '\n'); //take in user command
+    bool found = false;
+    for (int i = 0; i < Database->size(); i++) {
+      if (strcmp(Database->at(i)->getTitle(), title) == 0) {
+	if (Database->at(i)->getType() == 1) { //video game
+	  cout << "Video game found. Would like to delete \"" << Database->at(i)->getTitle() << "\"? Type y/n" << endl;
+	  char del[81];
+	  cin.getline(del, 80, '\n');
+	  if (strcmp(del, "y") == 0) {
+	    //Database->at(i)->~Media();
+	    Game* game = static_cast<Game*>(Database->at(i));
+	    delete *(Database->begin()+i);
+	    Database->erase(Database->begin()+i);
+	    game->~Game();
+	  }
+	  
+	}
+	if (Database->at(i)->getType() == 2) { //music
+	  Music* music = static_cast<Music*>(Database->at(i));
+	}
+	if (Database->at(i)->getType() == 3) { //movie
+	  Movie* movie = static_cast<Movie*>(Database->at(i));
+	}
+	found = true;
+      }
+    }
+    if (found == false) {
+      cout << "Nothing found." << endl;
+    }
+  }
+  else if (strcmp(search, "YEAR") == 0) {
+    int year;
+    cout << "Enter the year you want to search for: " << endl;
+    cin >> year; //take in user command
+    cin.get();
+    bool found = false;
+    for (int i = 0; i < Database->size(); i++) {
+      if (Database->at(i)->getYear() == year) {
+	if (Database->at(i)->getType() == 1) { //video game
+	  Game* game = static_cast<Game*>(Database->at(i));
+	}
+	if (Database->at(i)->getType() == 2) { //music
+	  Music* music = static_cast<Music*>(Database->at(i));
+	}
+	if (Database->at(i)->getType() == 3) { //movie
+	  Movie* movie = static_cast<Movie*>(Database->at(i));
 	}
 	found = true;
       }

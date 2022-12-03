@@ -29,4 +29,5 @@ int Media::getType() {
 }
 
 Media::~Media() {
+  delete title;
 }

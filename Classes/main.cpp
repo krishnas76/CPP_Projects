@@ -30,6 +30,8 @@
 
 using namespace std;
 
+void search(vector<Media*> *Database);
+
 int main() {
   //initializes Studentlist vector
   vector<Media*> *Database = new vector<Media*>();
@@ -95,7 +97,7 @@ int main() {
 	cout << "Artist:  ";
         cin.get(artist, 80);
         cin.get();
-	cout << "Duration:  ";
+	cout << "Duration (minutes):  ";
         cin >> duration;
         cin.get();
         cout << "Publisher:  ";
@@ -122,7 +124,7 @@ int main() {
         cout << "Director:  ";
         cin.get(director, 80);
         cin.get();
-        cout << "Duration:  ";
+        cout << "Duration (minutes):  ";
         cin >> duration;
         cin.get();
         cout << "Rating:  ";
@@ -187,12 +189,13 @@ int main() {
 	}
       }
       else if (strcmp(search, "YEAR") == 0) {
-	int year[81];
-        cout << "Enter the title you want to search for: " << endl;
-        cin.getline(year, 80, '\n'); //take in user command
-        bool found = false;
+	int year;
+        cout << "Enter the year you want to search for: " << endl;
+        cin >> year; //take in user command
+	cin.get();
+	bool found = false;
         for (int i = 0; i < Database->size(); i++) {
-          if (strcmp(Database->at(i)->getTitle(), title) == 0) {
+          if (Database->at(i)->getYear() == year) {
             if (Database->at(i)->getType() == 1) { //video game
               Game* game = static_cast<Game*>(Database->at(i));
               cout << "Media found!" << endl;
@@ -255,4 +258,8 @@ int main() {
   }
 
   return 0;
+}
+
+void search(vector<Media*> *Database) {
+  
 }

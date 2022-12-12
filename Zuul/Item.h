@@ -1,4 +1,4 @@
-#include <iostream>
+/Users/srikanthsrinivasan/Documents/CPP_Projects/Zuul #include <iostream>
 #include <cstring>
 
 //header guard
@@ -15,7 +15,6 @@ class Item {
   Item(char*);
 
   //functions
-  virtual ~Item();
   virtual char* getDescription();
 
   //variables

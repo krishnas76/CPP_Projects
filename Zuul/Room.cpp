@@ -8,3 +8,5 @@ using namespace std;
 //constructors
 Room::Room() {
 }
+
+Room::Room(char* 

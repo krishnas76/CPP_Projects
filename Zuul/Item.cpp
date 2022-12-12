@@ -19,7 +19,3 @@ char* Item::getDescription() {
   return description;
 }
 
-//desctructor
-Item::~Item() {
-  delete description;
-}

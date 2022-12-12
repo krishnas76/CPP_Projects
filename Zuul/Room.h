@@ -19,19 +19,18 @@ class Room {
   Room(char*);
 
   //functions
-  virtual void setExit(char* direction, Room* neighbor);
-  virtual char* getDescription();
-  virtual Room* getExit(char* direction);
-  virtual Item* getItem(char* item);
-  virtual void setItem(Item item);
-  virtual void removeItem(char* item);
-  virtual void getRoomItems();
+  void setExit(char* direction, Room* neighbor);
+  char* getDescription();
+  Room* getExit(char* direction);
+  Item* getItem(char* item);
+  void setItem(Item* item);
+  void removeItem(char* item);
+  void getRoomItems();
 
   //variables
   char* description;
-  map<5, 4> exits;
+  map<char*, Room*> *exits;
   vector<Item*> *items = new vector<Item*>();
 };
 
 #endif
-B

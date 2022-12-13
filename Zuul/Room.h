@@ -25,12 +25,12 @@ class Room {
   Item* getItem(char* item);
   void setItem(Item* item);
   void removeItem(char* item);
-  void getRoomItems();
+  void printRoomItems();
 
   //variables
   char* description;
   map<char*, Room*> *exits;
-  vector<Item*> *items = new vector<Item*>();
+  vector<Item*> *items;
 };
 
 #endif

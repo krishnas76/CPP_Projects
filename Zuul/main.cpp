@@ -119,25 +119,41 @@ int main() {
   cout << currentRoom->getDescription() << endl;
   cout << "Items available:" << endl;
   currentRoom->printRoomItems();
-  
-  //initializing items
-  char abook[5] = "book";
-  Item* book = new Item(abook);
-  char apenny[6] = "penny";
-  Item* penny = new Item(apenny);
-  char amilk[5] = "milk";
-  Item* milk = new Item(amilk);
-  char abandaid[8] = "bandaid";
-  Item* bandaid = new Item(abandaid);
-  char akey[4] = "key";
-  Item* key = new Item(akey);
-  char aburger[7] = "burger";
-  Item* burger = new Item(aburger);
-  char afries[6] = "fries";
-  Item* fries = new Item(afries);
-  char apancake[8] = "pancake";
-  Item* pancake = new Item(apancake);
 
+  cout << 1 << endl;
+  //initializing items
+  char abook[] = "book";
+  Item* book = new Item();
+  strcpy(book->description, abook);
+  cout << book->getDescription() << endl;
+  char apenny[] = "penny";
+  Item* penny = new Item();
+  strcpy(penny->description, apenny);
+  char amilk[] = "milk";
+  Item* milk = new Item();
+  strcpy(milk->description, amilk);
+  char abandaid[] = "bandaid";
+  //char* abandaid = new char[8];
+  //strcpy(abandaid, "bandaid");
+  Item* bandaid = new Item();
+  strcpy(bandaid->description, abandaid);
+  //Item* bandaid = new Item(abandaid);
+  char akey[] = "key";
+  //char* akey = new char[4];
+  //strcpy(akey, "key");
+  Item* key = new Item();
+  strcpy(key->description, akey);
+  //Item* key = new Item(akey);
+  char aburger[] = "burger";
+  Item* burger = new Item();
+  strcpy(burger->description, aburger);
+  char afries[] = "fries";
+  Item* fries = new Item();
+  strcpy(fries->description, afries);
+  char apancake[] = "pancake";
+  Item* pancake = new Item();
+  strcpy(pancake->description, apancake);
+  cout << "items initialized" << endl;
   //setting items in rooms
   library->setItem(book);
   bank->setItem(penny);
@@ -212,7 +228,9 @@ int main() {
 	for (it = inventory->begin(); it < inventory->end(); it++) {
 	  //strcpy(desc,(*it)->getDescription());
 	  //cout << desc << endl;
+	  cout << 1 << endl;
 	  cout << (*it)->getDescription() << endl;
+	  cout << 2 << endl;
 	}
       }
     }

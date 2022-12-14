@@ -12,7 +12,7 @@ class Item {
 
   //constructors
   Item();
-  Item(char*);
+  //Item(char*);
 
   //functions
   char* getDescription();

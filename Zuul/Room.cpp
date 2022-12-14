@@ -57,7 +57,7 @@ void Room::removeItem(char* item) {
   for (it = items.begin(); it < items.end(); it++) {
     if (strcmp((*it)->getDescription(), item) == 0) {
       //delete item
-      delete *it;
+      //delete *it;
       items.erase(items.begin()+index);
       break;
     }

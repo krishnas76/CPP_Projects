@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <vector>
 #include <iomanip>
+#include <algorithm>
 
 #include "Item.h"
 #include "Room.h"
@@ -133,17 +134,11 @@ int main() {
   Item* milk = new Item();
   strcpy(milk->description, amilk);
   char abandaid[] = "bandaid";
-  //char* abandaid = new char[8];
-  //strcpy(abandaid, "bandaid");
   Item* bandaid = new Item();
   strcpy(bandaid->description, abandaid);
-  //Item* bandaid = new Item(abandaid);
   char akey[] = "key";
-  //char* akey = new char[4];
-  //strcpy(akey, "key");
   Item* key = new Item();
   strcpy(key->description, akey);
-  //Item* key = new Item(akey);
   char aburger[] = "burger";
   Item* burger = new Item();
   strcpy(burger->description, aburger);
@@ -153,7 +148,7 @@ int main() {
   char apancake[] = "pancake";
   Item* pancake = new Item();
   strcpy(pancake->description, apancake);
-  cout << "items initialized" << endl;
+
   //setting items in rooms
   library->setItem(book);
   bank->setItem(penny);
@@ -165,6 +160,15 @@ int main() {
   ihop->setItem(pancake);
   
   vector<Item*> *inventory = new vector<Item*>();
+  vector<Item*> *itemList = new vector<Item*>();
+  itemList->push_back(book);
+  itemList->push_back(penny);
+  itemList->push_back(milk);
+  itemList->push_back(bandaid);
+  itemList->push_back(key);
+  itemList->push_back(burger);
+  itemList->push_back(fries);
+  itemList->push_back(pancake);
   
   //game loop
   while (true) {
@@ -215,7 +219,23 @@ int main() {
     }
     
     else if (strcmp(input, "drop") == 0) {
-     
+      if (inventory->size() == 0) {
+        cout << "You have no items to drop." << endl;
+      }
+      else {
+	cout << "Which item would you like to drop?" << endl;
+        char dropitem[80];
+        cin >> dropitem;
+        cin.get();
+	/*	if (find(inventory->begin(), inventory->end(), ) != inventory->end()) {
+
+	}
+	else {
+	  cout << "You do not have this item." << endl;
+	}
+	*/
+      }
+
     }
     
     else if (strcmp(input, "inventory") == 0) {
@@ -224,13 +244,8 @@ int main() {
       }
       else {
 	vector<Item*>::iterator it;
-	char desc[81];
 	for (it = inventory->begin(); it < inventory->end(); it++) {
-	  //strcpy(desc,(*it)->getDescription());
-	  //cout << desc << endl;
-	  cout << 1 << endl;
 	  cout << (*it)->getDescription() << endl;
-	  cout << 2 << endl;
 	}
       }
     }
@@ -243,26 +258,6 @@ int main() {
     else {
       cout << "That is not a valid command word." << endl;
     }
-
-
- 
-    //for (int i = 0; i < strlen(input); i++) {
-    //if (input[i] != 32) {
-    //	if (words == 0) {
-    //	  word1[i] = input[i];
-    //	}
-    //	else if (words == 1) {
-    //	  word1[i] = '\0';
-    //	  word2[i-strlen(word1) - 2] = input[i];
-    //	}
-    //}
-    //else if (input[i] == '\0') {
-    //	break;
-    //}
-    //else {
-    //	words++;
-    //}
-    // }
     
   }
 

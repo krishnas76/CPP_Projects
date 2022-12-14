@@ -29,8 +29,8 @@ class Room {
 
   //variables
   char* description;
-  map<char*, Room*> *exits;
-  vector<Item*> *items;
+  map<char*, Room*> exits;
+  vector<Item*> items;
 };
 
 #endif

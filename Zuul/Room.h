@@ -23,6 +23,7 @@ class Room {
   char* getDescription();
   Room* getExit(char* direction);
   Item* getItem(char* item);
+  vector<Item*> getItems();
   void setItem(Item* item);
   void removeItem(char* item);
   void printRoomItems();

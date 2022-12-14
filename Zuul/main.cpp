@@ -179,7 +179,23 @@ int main() {
     }
     
     else if (strcmp(input, "get") == 0) {
-      
+      if (currentRoom->getItems().size() == 0) {
+	cout << "There are no items here." << endl;
+      }
+      else {
+	cout << "Which item would you like to get?" << endl;
+	char pickitem[80];
+	cin >> pickitem;
+	cin.get();
+	if (currentRoom->getItem(pickitem) != NULL) {
+	  inventory->push_back(currentRoom->getItem(pickitem));
+	  currentRoom->removeItem(pickitem);
+	  cout << "Picked up " << pickitem << "!" << endl;
+	}
+	else {
+	  cout << "That item is not here!" << endl;
+	}
+      }
     }
     
     else if (strcmp(input, "drop") == 0) {
@@ -192,10 +208,12 @@ int main() {
       }
       else {
 	vector<Item*>::iterator it;
+	char desc[81];
 	for (it = inventory->begin(); it < inventory->end(); it++) {
-	  cout << (*it)->getDescription() << " ";
+	  //strcpy(desc,(*it)->getDescription());
+	  //cout << desc << endl;
+	  cout << (*it)->getDescription() << endl;
 	}
-	cout << endl;
       }
     }
     

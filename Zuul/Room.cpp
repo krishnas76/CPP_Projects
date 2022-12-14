@@ -36,21 +36,26 @@ Room* Room::getExit(char* direction) {
 Item* Room::getItem(char* item) {
   vector<Item*>::iterator it;
   for (it = items.begin(); it < items.end(); it++) {
-    if ((*it)->getDescription() == item) {
+    if (strcmp((*it)->getDescription(), item) == 0) {
       return *it;
     }
   }
   return NULL;
 }
+
+vector<Item*> Room::getItems() {
+  return items;
+}
+
 void Room::setItem(Item* item) {
   items.push_back(item);
 }
 
 void Room::removeItem(char* item) {
   vector<Item*>::iterator it;
-  int index =	0;
+  int index = 0;
   for (it = items.begin(); it < items.end(); it++) {
-    if ((*it)->getDescription() == item) {
+    if (strcmp((*it)->getDescription(), item) == 0) {
       //delete item
       delete *it;
       items.erase(items.begin()+index);

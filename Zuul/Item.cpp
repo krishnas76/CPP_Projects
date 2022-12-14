@@ -18,4 +18,3 @@ Item::Item(char* newdescription) {
 char* Item::getDescription() {
   return description;
 }
-

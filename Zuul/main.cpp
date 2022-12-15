@@ -174,6 +174,14 @@ int main() {
   
   //game loop
   while (true) {
+
+    //win condition
+    if (currentRoom == vault && vault->getItem(akey) == key)    {
+      cout << "You win!" << endl;
+      break;
+    }
+
+    //take user command
     char input[81];
     cin >> input;
     cin.get();
@@ -191,7 +199,10 @@ int main() {
       cin >> direction;
       cin.get();
       Room* nextRoom = currentRoom->getExit(direction); //see if there is a room in that direction
-      if (nextRoom == NULL) { //no room in that direction
+      if (strcmp(direction, "north") != 0 && strcmp(direction, "east") != 0 && strcmp(direction, "south") != 0 && strcmp(direction, "west") != 0) {
+	cout << "That is not a valid direction." << endl;
+      }
+      else if (nextRoom == NULL) { //no room in that direction
 	cout << "There is nothing there!" << endl;
       }
       else { //room in that direction exists
@@ -200,12 +211,6 @@ int main() {
 	cout << currentRoom->getDescription() << endl;
 	cout << "Items available:" << endl;
 	currentRoom->printRoomItems();
-
-	//win condition
-	if (currentRoom == vault && find(inventory->begin(), inventory->end(), key) != inventory->end()) {
-	  cout << "You win!" << endl;
-	  break;
-	}
       }
     }
 
@@ -297,6 +302,7 @@ int main() {
 }
 
 void printHelp() {
+  cout << "Find the key and drop it in the vault." << endl;
   cout << "Enter a command word. Your command words are:" << endl;
   cout << "help, go, get, drop, inventory, quit" << endl;
 }

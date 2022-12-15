@@ -1,6 +1,6 @@
 /*This program creates Zuul, an adventure game
  *Author: Krishna Srikanth
- *Date:
+ *Date: 12/14/2022
  */
 
 #include <iostream>
@@ -14,13 +14,14 @@
 #include "Room.h"
 using namespace std;
 
+//declaring functions
 void printHelp();
 
 int main() {
 
   //intro message
-  cout << "Welcome to Krishna's Kingly Key!" << endl;
-  cout << "The goal of this game is to find the Krishna's Kingly Key and use it to open the vault." << endl;
+  cout << "Welcome to Krishna's Key!" << endl;
+  cout << "The goal of this game is to find Krishna's Key and use it to open the vault." << endl;
   cout << "Type \"help\" if you need help." << endl;
 
   //initializing rooms
@@ -121,12 +122,10 @@ int main() {
   cout << "Items available:" << endl;
   currentRoom->printRoomItems();
 
-  cout << 1 << endl;
   //initializing items
   char abook[] = "book";
   Item* book = new Item();
   strcpy(book->description, abook);
-  cout << book->getDescription() << endl;
   char apenny[] = "penny";
   Item* penny = new Item();
   strcpy(penny->description, apenny);
@@ -158,8 +157,11 @@ int main() {
   mcdonalds->setItem(burger);
   mcdonalds->setItem(fries);
   ihop->setItem(pancake);
-  
+
+  //creating inventory
   vector<Item*> *inventory = new vector<Item*>();
+
+  //creating full list of items
   vector<Item*> *itemList = new vector<Item*>();
   itemList->push_back(book);
   itemList->push_back(penny);
@@ -176,80 +178,110 @@ int main() {
     cin >> input;
     cin.get();
 
+    //help
     if (strcmp(input, "help") == 0) {
       printHelp();
     }
-    
+
+    //go
     else if (strcmp(input, "go") == 0) {
+      //take in direction
       cout << "What direction would you like to go? (north/east/south/west)" <<  endl;
       char direction[81];
       cin >> direction;
       cin.get();
-      Room* nextRoom = currentRoom->getExit(direction);
-      if (nextRoom == NULL) {
+      Room* nextRoom = currentRoom->getExit(direction); //see if there is a room in that direction
+      if (nextRoom == NULL) { //no room in that direction
 	cout << "There is nothing there!" << endl;
       }
-      else {
+      else { //room in that direction exists
+	//move to new room
 	currentRoom = nextRoom;
 	cout << currentRoom->getDescription() << endl;
 	cout << "Items available:" << endl;
 	currentRoom->printRoomItems();
+
 	//win condition
+	if (currentRoom == vault && find(inventory->begin(), inventory->end(), key) != inventory->end()) {
+	  cout << "You win!" << endl;
+	  break;
+	}
       }
     }
-    
+
+    //get
     else if (strcmp(input, "get") == 0) {
-      if (currentRoom->getItems().size() == 0) {
+      if (currentRoom->getItems().size() == 0) { //if no items in room
 	cout << "There are no items here." << endl;
       }
-      else {
+      else { //if there are items in room
 	cout << "Which item would you like to get?" << endl;
 	char pickitem[80];
 	cin >> pickitem;
 	cin.get();
-	if (currentRoom->getItem(pickitem) != NULL) {
+	if (currentRoom->getItem(pickitem) != NULL) { //if specified item is in room, pick it up
 	  inventory->push_back(currentRoom->getItem(pickitem));
 	  currentRoom->removeItem(pickitem);
 	  cout << "Picked up " << pickitem << "!" << endl;
 	}
-	else {
+	else { //specified item not in room
 	  cout << "That item is not here!" << endl;
 	}
       }
     }
-    
+
+    //drop
     else if (strcmp(input, "drop") == 0) {
-      if (inventory->size() == 0) {
+      if (inventory->size() == 0) { //if nothing in inventory
         cout << "You have no items to drop." << endl;
       }
-      else {
+      else { //inventory has items in it
 	cout << "Which item would you like to drop?" << endl;
         char dropitem[80];
         cin >> dropitem;
         cin.get();
-	/*	if (find(inventory->begin(), inventory->end(), ) != inventory->end()) {
-
+	vector<Item*>::iterator it;
+	bool exists = false;
+        for (it = itemList->begin(); it < itemList->end(); it++) {
+	  if (strcmp((*it)->getDescription(), dropitem) == 0) { //if item exists, find item in inventory
+	    exists = true;
+	    vector<Item*>::iterator itr;
+	    int index = 0;
+	    bool found = false;
+	    for (itr = inventory->begin(); itr < inventory->end(); itr++) {
+	      if (strcmp((*itr)->getDescription(), dropitem) == 0) { //if item is in inventory, drop it
+		currentRoom->setItem(*itr);
+		inventory->erase(inventory->begin()+index);
+		cout << "Item dropped." << endl;
+		found = true;
+	      }
+	    }
+	    if (found == false) {
+	      cout << "You do not have this item." << endl;
+	    }	
+	  }
 	}
-	else {
-	  cout << "You do not have this item." << endl;
+	if (exists == false) {
+	  cout << "That item does not exist."	<< endl;
 	}
-	*/
       }
-
     }
-    
+
+    //inventory
     else if (strcmp(input, "inventory") == 0) {
       if (inventory->size() == 0) {
       	cout << "Your inventory is empty." << endl;
       }
-      else {
+      else { //if inventory isn't empty, print items in inventory
 	vector<Item*>::iterator it;
+	cout << "You have:" << endl;
 	for (it = inventory->begin(); it < inventory->end(); it++) {
 	  cout << (*it)->getDescription() << endl;
 	}
       }
     }
-    
+
+    //quit
     else if (strcmp(input, "quit") == 0) {
       cout << "Bye!" << endl;
       break;
@@ -258,7 +290,6 @@ int main() {
     else {
       cout << "That is not a valid command word." << endl;
     }
-    
   }
 
 

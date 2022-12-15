@@ -13,10 +13,9 @@ Room::Room(char* newdescription) {
   description = newdescription;
 }
 
+//functions
 void Room::setExit(char* direction, Room* neighbor) {
   exits.insert(make_pair(direction, neighbor));
-  //exits->insert({direction, neighbor});
-  //exits.emplace(direction, neighbor);
 }
 
 char* Room::getDescription() {
@@ -56,8 +55,6 @@ void Room::removeItem(char* item) {
   int index = 0;
   for (it = items.begin(); it < items.end(); it++) {
     if (strcmp((*it)->getDescription(), item) == 0) {
-      //delete item
-      //delete *it;
       items.erase(items.begin()+index);
       break;
     }

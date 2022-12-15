@@ -12,7 +12,6 @@ class Item {
 
   //constructors
   Item();
-  //Item(char*);
 
   //functions
   char* getDescription();

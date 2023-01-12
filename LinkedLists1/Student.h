@@ -12,12 +12,13 @@ class Student {
 
   //constructors
   Student();
+  Student(char*);
 
   //functions
   //char* getDescription();
 
   //variables
-  //char* description;
+  char* description;
 
 };
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include "Student.h"
 
 //header guard
 #ifndef NODE_H
@@ -24,7 +25,7 @@ class Node {
 
   //variables
   Student* student;
-  Node* node;
+  Node* next;
 
 };
 

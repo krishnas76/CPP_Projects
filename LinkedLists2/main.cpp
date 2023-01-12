@@ -19,7 +19,7 @@ using namespace std;
 void addStudent(Node* start);
 void print(Node* start);
 void deleteStudent(Node* start);
-void average(Node* start)
+void average(Node* start);
 
 int main() {
   
@@ -89,6 +89,7 @@ void addStudent(Node* start) {
   cin >> gpa;
   cin.ignore(80, '\n');
 
+  /*
   //add student with stored characteristics to Studentlist
   Student* student = new Student();
   strcpy(student -> fname, fname);
@@ -97,9 +98,11 @@ void addStudent(Node* start) {
   student->gpa = gpa;
   Studentlist->push_back(student);
   cout << "Student added." << endl;
+  */
 }
 
 void print(Node* start) {
+  /*
   for (int i = 0; i < Studentlist->size(); i++) {
     Student student = *Studentlist->at(i);
 
@@ -107,6 +110,7 @@ void print(Node* start) {
     cout << student.fname << " " << student.lname << ", " << student.id << ", " << student.gpa << endl;
   }
   return;
+  */
 }
 
 void deleteStudent(Node* start) {
@@ -116,6 +120,7 @@ void deleteStudent(Node* start) {
   cin >> id;
   cin.ignore(80, '\n');
 
+  /*
   //remove student from Studentlist
   bool exists = false;
   for (int i = 0; i < Studentlist->size(); i++) {
@@ -134,6 +139,7 @@ void deleteStudent(Node* start) {
   else {
     cout << "Student does not exist" << endl;
   }
+  */
 }
 
 void average(Node* start) {

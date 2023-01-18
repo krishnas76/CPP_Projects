@@ -11,15 +11,15 @@
 #include <iomanip>
 
 #include "student.h"
-#include "node.hpp"
+#include "node.h"
 
 using namespace std;
 
 //function prototypes
-void addStudent(Node* start);
-void print(Node* start);
-void deleteStudent(Node* start);
-void average(Node* start);
+void addStudent(Node* head);
+void print(Node* head);
+void deleteStudent(Node* head);
+void average(Node* head);
 
 int main() {
   
@@ -30,6 +30,7 @@ int main() {
   cout << "This is a Student List." << endl;
 
   //user command loop
+  Node* head;
   while(true) {
 
     //take user input
@@ -39,7 +40,7 @@ int main() {
 
     //add
     if (strcmp(input, "ADD") == 0) {
-      //addStudent();
+      addStudent(head);
     }
 
     //print
@@ -73,7 +74,7 @@ int main() {
   return 0;
 }
 
-void addStudent(Node* start) {
+void addStudent(Node* head) {
   //take in student characteristics
   char fname[81];
   char lname[81];
@@ -89,23 +90,22 @@ void addStudent(Node* start) {
   cin >> gpa;
   cin.ignore(80, '\n');
 
-  /*
-  //add student with stored characteristics to Studentlist
+  
+  //add student with stored characteristics to linked list
   Student* student = new Student();
   strcpy(student -> fname, fname);
   strcpy(student -> lname, lname);
   student->id = id;
   student->gpa = gpa;
-  Studentlist->push_back(student);
+  
   cout << "Student added." << endl;
-  */
+  
 }
 
-void print(Node* start) {
+void print(Node* head) {
   /*
   for (int i = 0; i < Studentlist->size(); i++) {
     Student student = *Studentlist->at(i);
-
     //print out characteristics of each student
     cout << student.fname << " " << student.lname << ", " << student.id << ", " << student.gpa << endl;
   }
@@ -113,7 +113,7 @@ void print(Node* start) {
   */
 }
 
-void deleteStudent(Node* start) {
+void deleteStudent(Node* head) {
   //take in id to delete
   int id;
   cout << "Enter the student ID of the student you wish to delete:  ";
@@ -131,7 +131,6 @@ void deleteStudent(Node* start) {
       break;
     }
   }
-
   //print if student has been deleted or if student doesn't exist
   if (exists) {
     cout << "Student deleted." << endl;
@@ -142,6 +141,6 @@ void deleteStudent(Node* start) {
   */
 }
 
-void average(Node* start) {
+void average(Node* head) {
 
 }

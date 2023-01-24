@@ -17,6 +17,7 @@ using namespace std;
 
 //function prototypes
 void addStudent(Node* head);
+void addNode(Node* head, Node* node);
 void print(Node* head);
 void deleteStudent(Node* head);
 void average(Node* head);
@@ -30,7 +31,8 @@ int main() {
   cout << "This is a Student List." << endl;
 
   //user command loop
-  Node* head;
+  Node* head = new Node();
+  head->setNext(nullptr);
   while(true) {
 
     //take user input
@@ -40,7 +42,7 @@ int main() {
 
     //add
     if (strcmp(input, "ADD") == 0) {
-      addStudent(head);
+      //addStudent(head);
     }
 
     //print
@@ -89,7 +91,6 @@ void addStudent(Node* head) {
   cout << "GPA:  ";
   cin >> gpa;
   cin.ignore(80, '\n');
-
   
   //add student with stored characteristics to linked list
   Student* student = new Student();
@@ -97,9 +98,37 @@ void addStudent(Node* head) {
   strcpy(student -> lname, lname);
   student->id = id;
   student->gpa = gpa;
-  
+  Node* node = new Node(student);
+  node->setNext(nullptr);
+  addNode(head, node);
+
+  /*
+  if (head == nullptr) {
+    head->stuptr = student;
+  }
+  else if (student->id <= head->stuptr->id) {
+    //put new node at start of list
+    
+  }
+  else {
+    Node* current = head;
+    while (current->next != nullptr) {
+      if (student->id >= current->stuptr->id && student->id <= current->next->stuptr->id) {
+	//add node after current
+	
+      }
+    }
+  }
+  */
+
   cout << "Student added." << endl;
   
+}
+
+void addNode(Node* head, Node* node) {
+  if (head->getNext() == nullptr) {
+    
+  }
 }
 
 void print(Node* head) {

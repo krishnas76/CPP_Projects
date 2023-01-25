@@ -31,7 +31,8 @@ int main() {
   cout << "This is a Student List." << endl;
 
   //user command loop
-  Node* head = new Node();
+  Student* first = new Student();
+  Node* head = new Node(first);
   head->setNext(nullptr);
   while(true) {
 
@@ -42,7 +43,7 @@ int main() {
 
     //add
     if (strcmp(input, "ADD") == 0) {
-      //addStudent(head);
+      addStudent(head);
     }
 
     //print

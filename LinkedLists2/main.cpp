@@ -20,7 +20,7 @@ void addStudent(Node* head);
 void addNode(Node* head, Node* node);
 void print(Node* head);
 void deleteStudent(Node* head);
-void average(Node* head);
+void average(Node* head, float sum, int count);
 
 int main() {
   
@@ -30,10 +30,12 @@ int main() {
   
   cout << "This is a Student List." << endl;
 
-  //user command loop
+  //initializing head
   Student* first = new Student();
   Node* head = new Node(first);
   head->setNext(nullptr);
+
+  //user command loop
   while(true) {
 
     //take user input
@@ -93,37 +95,19 @@ void addStudent(Node* head) {
   cin >> gpa;
   cin.ignore(80, '\n');
   
-  //add student with stored characteristics to linked list
+  //nake student
   Student* student = new Student();
   student->fname = fname;
   student->lname = lname;
   student->id = id;
   student->gpa = gpa;
+
+  //add student to linked list
   Node* node = new Node(student);
   node->setNext(nullptr);
   addNode(head, node);
 
-  /*
-  if (head == nullptr) {
-    head->stuptr = student;
-  }
-  else if (student->id <= head->stuptr->id) {
-    //put new node at start of list
-    
-  }
-  else {
-    Node* current = head;
-    while (current->next != nullptr) {
-      if (student->id >= current->stuptr->id && student->id <= current->next->stuptr->id) {
-	//add node after current
-	
-      }
-    }
-  }
-  */
-
   cout << "Student added." << endl;
-  
 }
 
 void addNode(Node* head, Node* node) {
@@ -146,8 +130,7 @@ void addNode(Node* head, Node* node) {
 
 void print(Node* head) {
   if (head->getNext() != nullptr) {
-    cout << head->getNext()->getStudent()->getfname(); /* << " " << head->getNext()->getStudent()->lname << ", "
-						     << head->getNext()->getStudent()->id << ", " << head->getNext()->getStudent()->gpa << endl;*/
+    cout << head->getNext()->getStudent()->fname << " " << head->getNext()->getStudent()->lname << ", " << head->getNext()->getStudent()->id << ", " << head->getNext()->getStudent()->gpa << endl;
     print(head->getNext());
   }
 }
@@ -180,6 +163,12 @@ void deleteStudent(Node* head) {
   */
 }
 
-void average(Node* head) {
-
+void average(Node* head, float sum, int count) {
+  if (head->getNext() != nullptr) {
+    average(head->getNext(), sum + head->getNext()->getStudent()->gpa, count +1);
+  }
+  
+  else {
+    cout << "Average GPA: " << sum / count << endl;
+  }
 }

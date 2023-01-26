@@ -13,12 +13,6 @@ class Student {
   //constructors
   Student();
   Student(char*, char*, int, float);
-
-  //functions
-  char* getfname();
-  char* getlname();
-  int getid();
-  float getgpa();
   
   //variables
   char* fname;

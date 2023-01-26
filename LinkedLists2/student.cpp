@@ -7,7 +7,8 @@ using namespace std;
 
 //constructors
 Student::Student() {
-  
+  fname = new char[81];
+  lname = new char[81];
 }
 
 Student::Student(char* firstname, char* lastname, int newid, float newgpa) {
@@ -15,17 +16,4 @@ Student::Student(char* firstname, char* lastname, int newid, float newgpa) {
   lname = lastname;
   id = newid;
   gpa = newgpa;
-}
-
-char* Student::getfname() {
-  return fname;
-}
-char* Student::getlname() {
-  return lname;
-}
-int Student::getid() {
-  return id;
-}
-float Student::getgpa() {
-  return gpa;
 }

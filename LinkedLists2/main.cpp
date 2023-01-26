@@ -1,15 +1,13 @@
 /*This program creates a student list database using a linked list
  *Author: Krishna Srikanth
- *Date: 
+ *Date: 1/26/2023
  */
-
 
 #include <iostream>
 #include <cstring>
 #include <ctype.h>
 #include <vector>
 #include <iomanip>
-
 #include "student.h"
 #include "node.h"
 
@@ -21,6 +19,7 @@ void addNode(Node* head, Node* node);
 void print(Node* head);
 void deleteStudent(Node* head);
 void average(Node* head, float sum, int count);
+bool deleteNode(Node* head, int id);
 
 int main() {
   
@@ -55,12 +54,12 @@ int main() {
 
     //delete
     else if (strcmp(input, "DELETE") == 0) {
-      //deleteStudent();
+      deleteStudent(head);
     }
 
     //average
     else if (strcmp(input, "AVERAGE") == 0) {
-      //average();
+      average(head, 0, 0);
     }
 
     //quit
@@ -72,8 +71,6 @@ int main() {
     else {
       cout << "That is not a valid command." << endl;
     }
-
-
   }
 
   return 0;
@@ -97,8 +94,8 @@ void addStudent(Node* head) {
   
   //nake student
   Student* student = new Student();
-  student->fname = fname;
-  student->lname = lname;
+  strcpy(student->fname, fname);
+  strcpy(student->lname, lname);
   student->id = id;
   student->gpa = gpa;
 
@@ -106,12 +103,11 @@ void addStudent(Node* head) {
   Node* node = new Node(student);
   node->setNext(nullptr);
   addNode(head, node);
-
   cout << "Student added." << endl;
 }
 
 void addNode(Node* head, Node* node) {
-  //if there are no students in the list
+  //if you are at the end of list
   if (head->getNext() == nullptr) {
     head->setNext(node);
   }
@@ -125,13 +121,13 @@ void addNode(Node* head, Node* node) {
   else {
     addNode(head->getNext(), node);
   }
-  
 }
 
 void print(Node* head) {
+  //if you are not at the end of list
   if (head->getNext() != nullptr) {
     cout << head->getNext()->getStudent()->fname << " " << head->getNext()->getStudent()->lname << ", " << head->getNext()->getStudent()->id << ", " << head->getNext()->getStudent()->gpa << endl;
-    print(head->getNext());
+      print(head->getNext());
   }
 }
 
@@ -142,32 +138,63 @@ void deleteStudent(Node* head) {
   cin >> id;
   cin.ignore(80, '\n');
 
-  /*
-  //remove student from Studentlist
-  bool exists = false;
-  for (int i = 0; i < Studentlist->size(); i++) {
-    if (id == (*Studentlist)[i]->id) {
-      exists = true;
-      delete *(Studentlist->begin()+i);
-      Studentlist->erase(Studentlist->begin()+i);
-      break;
-    }
-  }
-  //print if student has been deleted or if student doesn't exist
-  if (exists) {
+  //attempt to delete the node
+  bool deleted;
+  deleted = deleteNode(head, id);
+
+  //if node has been deleted
+  if (deleted == true) {
     cout << "Student deleted." << endl;
   }
+
+  //if node doesn't exist
   else {
     cout << "Student does not exist" << endl;
   }
-  */
+}
+
+bool deleteNode(Node* head, int id) {
+  bool deleted;
+
+  //if you are at the end of list
+  if (head->getNext() == nullptr) {
+    deleted = false;
+  }
+  
+  //if the student's id matches the id to delete
+  else if (head->getNext()->getStudent()->id == id) {
+
+    //if it is the last node
+    if (head->getNext()->getNext() == nullptr) {
+      delete head->getNext();
+      head->setNext(nullptr);
+    }
+
+    //if the node is in the middle of list
+    else {
+      Node* temp = head->getNext();
+      head->setNext(head->getNext()->getNext());
+      delete temp;
+    }
+    
+    deleted = true;
+    return deleted;
+  }
+  
+  else {
+    deleted = deleteNode(head->getNext(), id);
+  }
+
+  return deleted;
 }
 
 void average(Node* head, float sum, int count) {
+  //if you are not at the end of list
   if (head->getNext() != nullptr) {
     average(head->getNext(), sum + head->getNext()->getStudent()->gpa, count +1);
   }
-  
+
+  //you are at the end of list
   else {
     cout << "Average GPA: " << sum / count << endl;
   }

@@ -14,6 +14,12 @@ class Student {
   Student();
   Student(char*, char*, int, float);
 
+  //functions
+  char* getfname();
+  char* getlname();
+  int getid();
+  float getgpa();
+  
   //variables
   char* fname;
   char* lname;

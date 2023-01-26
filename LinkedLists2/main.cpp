@@ -48,7 +48,7 @@ int main() {
 
     //print
     else if (strcmp(input, "PRINT") == 0) {
-      //print();
+      print(head);
     }
 
     //delete
@@ -95,8 +95,8 @@ void addStudent(Node* head) {
   
   //add student with stored characteristics to linked list
   Student* student = new Student();
-  strcpy(student -> fname, fname);
-  strcpy(student -> lname, lname);
+  student->fname = fname;
+  student->lname = lname;
   student->id = id;
   student->gpa = gpa;
   Node* node = new Node(student);
@@ -127,20 +127,29 @@ void addStudent(Node* head) {
 }
 
 void addNode(Node* head, Node* node) {
+  //if there are no students in the list
   if (head->getNext() == nullptr) {
-    
+    head->setNext(node);
   }
+
+  //if the next node's id is greater than the new node's id
+  else if (head->getNext()->getStudent()->id >= node->getStudent()->id) {
+    node->setNext(head->getNext());
+    head->setNext(node);
+  }
+
+  else {
+    addNode(head->getNext(), node);
+  }
+  
 }
 
 void print(Node* head) {
-  /*
-  for (int i = 0; i < Studentlist->size(); i++) {
-    Student student = *Studentlist->at(i);
-    //print out characteristics of each student
-    cout << student.fname << " " << student.lname << ", " << student.id << ", " << student.gpa << endl;
+  if (head->getNext() != nullptr) {
+    cout << head->getNext()->getStudent()->getfname(); /* << " " << head->getNext()->getStudent()->lname << ", "
+						     << head->getNext()->getStudent()->id << ", " << head->getNext()->getStudent()->gpa << endl;*/
+    print(head->getNext());
   }
-  return;
-  */
 }
 
 void deleteStudent(Node* head) {

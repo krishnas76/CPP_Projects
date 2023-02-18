@@ -9,17 +9,22 @@
 #include <vector>
 #include <iomanip>
 #include <fstream>
+#include <math.h>
+#include <cmath>
 #include "student.h"
 #include "node.h"
 
 using namespace std;
 
 //function prototypes
-void addStudent(Node** hashtable, int size);
-Student* randStudent();
-void print(Node* head);
-void deleteStudent(Node* head);
-bool deleteNode(Node* head, int id);
+int addHash(Node** hashtable, int size, Student* student);
+int rehash(int size, Node** hashtable, Student* student);
+void rehashloop(Node** hashtable, Node* node, int size);
+int randStudent(int count, Node** hashtable, int size);
+void print(Node** hashtable, int size);
+void printloop(Node* node);
+void deleteStudent(Node** hashtable, int size);
+bool deleteNode(Node** hashtable, int id, Node* node, int size);
 
 int main() {
   
@@ -31,14 +36,14 @@ int main() {
 
   int size = 100;
   Node** hashtable = new Node*[100];
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < size; i++) {
     hashtable[i] = nullptr;
   }
   //hash funtion: gpa * (size/5)
   
   //user command loop
   while(true) {
-
+ 
     //take user input
     cout << "Type \"ADD\", \"GENERATE\", \"PRINT\", \"DELETE\", or \"QUIT\"" << endl;
     char input[81];
@@ -46,22 +51,49 @@ int main() {
 
     //add
     if (strcmp(input, "ADD") == 0) {
-      addStudent(hashtable, size);
+      //take in student characteristics
+      char fname[81];
+      char lname[81];
+      int id;
+      float gpa;
+      cout << "First name:  ";
+      cin >> fname;
+      cout << "Last name:  ";
+      cin >> lname;
+      cout << "Student ID:  ";
+      cin >> id;
+      cout << "GPA (0-5):  ";
+      cin >> gpa;
+      cin.ignore(80, '\n');
+      
+      //make student
+      Student* student = new Student();
+      strcpy(student->fname, fname);
+      strcpy(student->lname, lname);
+      student->id = id;
+      student->gpa = gpa;
 
+      size = addHash(hashtable, size, student);
+
+      cout << "Student added." << endl;      
     }
-
+    
     if (strcmp(input, "GENERATE") == 0) {
-      addStudent(hashtable, size); 
+      int count = 0;
+      cout << "How many students do you want to generate?" << endl;
+      cin >> count;
+      cin.ignore(80, '\n');
+      size = randStudent(count, hashtable, size); 
     }
 
     //print
     else if (strcmp(input, "PRINT") == 0) {
-      //print(head);
+      print(hashtable, size);
     }
 
     //delete
     else if (strcmp(input, "DELETE") == 0) {
-      //deleteStudent(head);
+      deleteStudent(hashtable, size);
     }
 
     //quit
@@ -78,83 +110,110 @@ int main() {
   return 0;
 }
 
-Student* randStudent() {
-  vector<char*> firstnames [10][20];
-  char lastnames [10][20];
+int addHash(Node** hashtable, int size, Student* student) {
+  int index = (int)(student->gpa*(size / 5));
 
-  ifstream firstnamefile(firstnames.txt);
-  ifstream lastnamefiles(lastnames.txt);
-
-  
-  for (int i = 0; i < 10; i++) {
-    firstnamefile >> firstnames;
-  }
-
-
-  //add student to linked list
   Node* node = new Node(student);
   node->setNext(nullptr);
 
   //no collision
-  if (hashtable[(int)gpa * (size / 5)] == nullptr) {
-    hashtable[(int)gpa*(size/5)] = node;
+  if (hashtable[index] == nullptr) {
+    hashtable[index] = node;
   }
-
-  //collision
-  else {
-
-  }
-  cout << "Student added." << endl;
-}
-
-void addStudent(Node** hashtable, int size) {
-  //take in student characteristics
-  char fname[81];
-  char lname[81];
-  int id;
-  float gpa;
-  cout << "First name:  ";
-  cin >> fname;
-  cout << "Last name:  ";
-  cin >> lname;
-  cout << "Student ID:  ";
-  cin >> id;
-  cout << "GPA:  ";
-  cin >> gpa;
-  cin.ignore(80, '\n');
   
-  //make student
-  Student* student = new Student();
-  strcpy(student->fname, fname);
-  strcpy(student->lname, lname);
-  student->id = id;
-  student->gpa = gpa;
-
-  //add student to linked list
-  Node* node = new Node(student);
-  node->setNext(nullptr);
-
-  //no collision
-  if (hashtable[(int)gpa * (size / 5)] == nullptr) {
-    hashtable[(int)gpa*(size/5)] = node;
+  //collisions
+  else if (hashtable[index]->getNext() == nullptr) {
+    hashtable[index]->setNext(node);
+  }
+  
+  else if (hashtable[index]->getNext()->getNext() == nullptr) {
+    hashtable[index]->getNext()->setNext(node);
   }
 
-  //collision
   else {
-
+    size = rehash(size * 2, hashtable, student);
   }
-  cout << "Student added." << endl;
+
+  return size;
+  
 }
 
-void print(Node* head) {
-  //if you are not at the end of list
-  if (head->getNext() != nullptr) {
-    cout << head->getNext()->getStudent()->fname << " " << head->getNext()->getStudent()->lname << ", " << head->getNext()->getStudent()->id << ", " << head->getNext()->getStudent()->gpa << endl;
-      print(head->getNext());
+int rehash(int size, Node** hashtable, Student* student) {
+  Node** newhashtable = new Node*[size];
+  for (int i = 0; i < size; i++) {
+    newhashtable[i] = nullptr;
+  }
+
+  addHash(newhashtable, size, student);
+  for (int i = 0; i < size / 2; i++) {
+    rehashloop(newhashtable, hashtable[i], size);
+  }
+
+  hashtable = newhashtable;
+  return size;
+
+}
+
+void rehashloop(Node** hashtable, Node* node, int size) {
+  if (node != nullptr) {
+    addHash(hashtable, size, node->getStudent());
+    rehashloop(hashtable, node->getNext(), size);
   }
 }
 
-void deleteStudent(Node* head) {
+
+int randStudent(int count, Node** hashtable, int size) {
+  int newsize = size;
+  for (int i = 0; i < count; i++) {
+
+    //get first name
+    ifstream firstname ("firstnames.txt");
+    char first[81];
+    char temp[81];
+    for (int j = 0; j < (rand()%10+1); j++) {
+      firstname >> temp;
+    }
+    firstname >> first;
+    
+    //get last name
+    ifstream lastname ("lastnames.txt");
+    char last[81];
+    for (int j = 0; j < (rand()%10+1); j++) {
+      lastname >> temp;
+    }
+    lastname >> last;
+
+    //make id and gpa
+    int id = 300000 + i;
+    float gpa = (rand() % 500 + 1) / 100;
+
+    //make student
+    Student* student = new Student(first, last, id, gpa);
+
+    newsize = addHash(hashtable, size, student);
+    cout << "Student generated: " << first << " " << last << ", " << id << ", " << gpa << endl;
+    
+  }
+
+  return newsize;
+  
+}
+  
+
+void print(Node** hashtable, int size) {
+  for (int i = 0; i < size; i++) {
+    printloop(hashtable[i]);
+  }
+}
+
+void printloop(Node* node) {
+  if (node != nullptr) {
+    cout << node->getStudent()->fname << " " << node->getStudent()->lname << ", " << node->getStudent()->id << ", " << node->getStudent()->gpa << endl;
+    printloop(node->getNext());
+  }
+}
+
+void deleteStudent(Node** hashtable, int size) {
   //take in id to delete
   int id;
   cout << "Enter the student ID of the student you wish to delete:  ";
@@ -163,8 +222,10 @@ void deleteStudent(Node* head) {
 
   //attempt to delete the node
   bool deleted;
-  deleted = deleteNode(head, id);
-
+  for (int i = 0; i < size; i++) {
+    deleted = deleteNode(hashtable, id, hashtable[i], size);
+  }
+  
   //if node has been deleted
   if (deleted == true) {
     cout << "Student deleted." << endl;
@@ -173,52 +234,62 @@ void deleteStudent(Node* head) {
   //if node doesn't exist
   else {
     cout << "Student does not exist" << endl;
-  }
+  }               
 }
 
-bool deleteNode(Node* head, int id) {
-  bool deleted;
+bool deleteNode(Node** hashtable, int id, Node* node, int size) {
+  bool deleted = false;
 
   //if you are at the end of list
-  if (head->getNext() == nullptr) {
+  if (node == nullptr) {
     deleted = false;
+    return deleted;
   }
   
-  //if the student's id matches the id to delete
-  else if (head->getNext()->getStudent()->id == id) {
+  //if the first student's id matches the id to delete
+  else if (node->getStudent()->id == id) {
 
     //if it is the last node
-    if (head->getNext()->getNext() == nullptr) {
-      delete head->getNext();
-      head->setNext(nullptr);
+    if (node->getNext() == nullptr) {
+      delete node;
+      hashtable[(int)(node->getStudent()->gpa) * (size/5)] = nullptr;
     }
 
-    //if the node is in the middle of list
+    //if there are nodes after it
     else {
-      Node* temp = head->getNext();
-      head->setNext(head->getNext()->getNext());
-      delete temp;
+      hashtable[(int)(node->getStudent()->gpa) * (size/5)] = node->getNext();
+      delete node;
     }
     
     deleted = true;
     return deleted;
   }
   
-  else {
-    deleted = deleteNode(head->getNext(), id);
+  else if (node->getNext()->getStudent()->id == id) {
+     //if it is the last node
+    if (node->getNext()->getNext() == nullptr) {
+      delete node->getNext();
+      node->setNext(nullptr);
+    }
+
+    //if there are nodes after it
+    else {
+      Node* temp = node->getNext();
+      node->setNext(node->getNext()->getNext());
+      delete temp;
+    }
+
+    deleted = true;
+    return deleted;
   }
 
+  else if (node->getNext()->getNext()->getStudent()->id == id) {
+    delete node->getNext()->getNext();
+    node->getNext()->setNext(nullptr);
+    
+    deleted = true;
+    return deleted;
+  }
+  
   return deleted;
-}
-
-void average(Node* head, float sum, int count) {
-  //if you are not at the end of list
-  if (head->getNext() != nullptr) {
-    average(head->getNext(), sum + head->getNext()->getStudent()->gpa, count +1);
-  }
-
-  //you are at the end of list
-  else {
-    cout << "Average GPA: " << sum / count << endl;
-  }
 }

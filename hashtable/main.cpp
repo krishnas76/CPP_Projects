@@ -15,7 +15,8 @@
 using namespace std;
 
 //function prototypes
-void addStudent(Node* hashtable, int size);
+void addStudent(Node** hashtable, int size);
+Student* randStudent();
 void print(Node* head);
 void deleteStudent(Node* head);
 bool deleteNode(Node* head, int id);
@@ -29,20 +30,28 @@ int main() {
   cout << "This is a randomly generated student database." << endl;
 
   int size = 100;
-  Node* hashtable[size];
+  Node** hashtable = new Node*[100];
+  for (int i = 0; i < 100; i++) {
+    hashtable[i] = nullptr;
+  }
   //hash funtion: gpa * (size/5)
   
   //user command loop
   while(true) {
 
     //take user input
-    cout << "Type \"ADD\", \"PRINT\", \"DELETE\", or \"QUIT\"" << endl;
+    cout << "Type \"ADD\", \"GENERATE\", \"PRINT\", \"DELETE\", or \"QUIT\"" << endl;
     char input[81];
     cin.getline(input, 80, '\n'); //take in user command
 
     //add
     if (strcmp(input, "ADD") == 0) {
       addStudent(hashtable, size);
+
+    }
+
+    if (strcmp(input, "GENERATE") == 0) {
+      addStudent(hashtable, size); 
     }
 
     //print
@@ -69,7 +78,36 @@ int main() {
   return 0;
 }
 
-void addStudent(Node* hashtable, int size) {
+Student* randStudent() {
+  vector<char*> firstnames [10][20];
+  char lastnames [10][20];
+
+  ifstream firstnamefile(firstnames.txt);
+  ifstream lastnamefiles(lastnames.txt);
+
+  
+  for (int i = 0; i < 10; i++) {
+    firstnamefile >> firstnames;
+  }
+
+
+  //add student to linked list
+  Node* node = new Node(student);
+  node->setNext(nullptr);
+
+  //no collision
+  if (hashtable[(int)gpa * (size / 5)] == nullptr) {
+    hashtable[(int)gpa*(size/5)] = node;
+  }
+
+  //collision
+  else {
+
+  }
+  cout << "Student added." << endl;
+}
+
+void addStudent(Node** hashtable, int size) {
   //take in student characteristics
   char fname[81];
   char lname[81];
@@ -85,7 +123,7 @@ void addStudent(Node* hashtable, int size) {
   cin >> gpa;
   cin.ignore(80, '\n');
   
-  //nake student
+  //make student
   Student* student = new Student();
   strcpy(student->fname, fname);
   strcpy(student->lname, lname);
@@ -97,8 +135,8 @@ void addStudent(Node* hashtable, int size) {
   node->setNext(nullptr);
 
   //no collision
-  if (hashtable[gpa * (size / 5)] == nullptr) {
-    hashtable[gpa*(size/5)] = node;
+  if (hashtable[(int)gpa * (size / 5)] == nullptr) {
+    hashtable[(int)gpa*(size/5)] = node;
   }
 
   //collision

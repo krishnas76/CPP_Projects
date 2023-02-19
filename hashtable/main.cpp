@@ -1,6 +1,6 @@
 /*This program creates a hash table and a random student generator
  *Author: Krishna Srikanth
- *Date: 
+ *Date: 2/18/23
  */
 
 #include <iostream>
@@ -24,7 +24,7 @@ int randStudent(int count, Node** hashtable, int size);
 void print(Node** hashtable, int size);
 void printloop(Node* node);
 void deleteStudent(Node** hashtable, int size);
-bool deleteNode(Node** hashtable, int id, Node* node, int size);
+bool deleteNode(Node** hashtable, int id, Node* node, int index);
 
 int main() {
   
@@ -34,12 +34,12 @@ int main() {
   
   cout << "This is a randomly generated student database." << endl;
 
+  //initializing size and hashtable
   int size = 100;
   Node** hashtable = new Node*[100];
   for (int i = 0; i < size; i++) {
     hashtable[i] = nullptr;
   }
-  //hash funtion: gpa * (size/5)
   
   //user command loop
   while(true) {
@@ -77,7 +77,8 @@ int main() {
 
       cout << "Student added." << endl;      
     }
-    
+
+    //generate
     if (strcmp(input, "GENERATE") == 0) {
       int count = 0;
       cout << "How many students do you want to generate?" << endl;
@@ -111,7 +112,7 @@ int main() {
 }
 
 int addHash(Node** hashtable, int size, Student* student) {
-  int index = (int)(student->gpa*(size / 5));
+  int index = student->id % size;
 
   Node* node = new Node(student);
   node->setNext(nullptr);
@@ -139,11 +140,13 @@ int addHash(Node** hashtable, int size, Student* student) {
 }
 
 int rehash(int size, Node** hashtable, Student* student) {
+  //make newhashtable
   Node** newhashtable = new Node*[size];
   for (int i = 0; i < size; i++) {
     newhashtable[i] = nullptr;
   }
 
+  //transfer all old entries to newhashtable
   addHash(newhashtable, size, student);
   for (int i = 0; i < size / 2; i++) {
     rehashloop(newhashtable, hashtable[i], size);
@@ -155,6 +158,7 @@ int rehash(int size, Node** hashtable, Student* student) {
 }
 
 void rehashloop(Node** hashtable, Node* node, int size) {
+  //if node isn't null, add it to the hashtable and move on to the next node
   if (node != nullptr) {
     addHash(hashtable, size, node->getStudent());
     rehashloop(hashtable, node->getNext(), size);
@@ -164,13 +168,14 @@ void rehashloop(Node** hashtable, Node* node, int size) {
 
 int randStudent(int count, Node** hashtable, int size) {
   int newsize = size;
+  srand (time(NULL));
   for (int i = 0; i < count; i++) {
 
     //get first name
     ifstream firstname ("firstnames.txt");
     char first[81];
     char temp[81];
-    for (int j = 0; j < (rand()%10+1); j++) {
+    for (int j = 0; j < ((rand()%10)+1); j++) {
       firstname >> temp;
     }
     firstname >> first;
@@ -185,11 +190,16 @@ int randStudent(int count, Node** hashtable, int size) {
 
     //make id and gpa
     int id = 300000 + i;
-    float gpa = (rand() % 500 + 1) / 100;
+    float gpa = (float)(rand() % 500 + 1) / 100;
 
     //make student
-    Student* student = new Student(first, last, id, gpa);
+    Student* student = new Student();
+    strcpy(student->fname, first);
+    strcpy(student->lname, last);
+    student->id = id;
+    student->gpa = gpa;
 
+    //add student to hashtable
     newsize = addHash(hashtable, size, student);
     cout << "Student generated: " << first << " " << last << ", " << id << ", " << gpa << endl;
     
@@ -201,14 +211,17 @@ int randStudent(int count, Node** hashtable, int size) {
   
 
 void print(Node** hashtable, int size) {
+  //iterate through hashtable
   for (int i = 0; i < size; i++) {
     printloop(hashtable[i]);
   }
 }
 
 void printloop(Node* node) {
+  //if node isn't null, print the student then move on to the next node
   if (node != nullptr) {
-    cout << node->getStudent()->fname << " " << node->getStudent()->lname << ", " << node->getStudent()->id << ", " << node->getStudent()->gpa << endl;
+    Student* student = node->getStudent();
+    cout << student->fname << " " << node->getStudent()->lname << ", " << node->getStudent()->id << ", " << node->getStudent()->gpa << endl;
     printloop(node->getNext());
   }
 }
@@ -220,53 +233,49 @@ void deleteStudent(Node** hashtable, int size) {
   cin >> id;
   cin.ignore(80, '\n');
 
-  //attempt to delete the node
-  bool deleted;
-  for (int i = 0; i < size; i++) {
-    deleted = deleteNode(hashtable, id, hashtable[i], size);
-  }
+  int index = id % size;
   
   //if node has been deleted
-  if (deleted == true) {
+  if (deleteNode(hashtable, id, hashtable[index], index)) {
     cout << "Student deleted." << endl;
   }
 
   //if node doesn't exist
   else {
-    cout << "Student does not exist" << endl;
+    cout << "Student does not exist." << endl;
   }               
 }
 
-bool deleteNode(Node** hashtable, int id, Node* node, int size) {
+bool deleteNode(Node** hashtable, int id, Node* node, int index) {
   bool deleted = false;
 
-  //if you are at the end of list
+  //if node is empty
   if (node == nullptr) {
     deleted = false;
     return deleted;
   }
   
   //if the first student's id matches the id to delete
-  else if (node->getStudent()->id == id) {
-
-    //if it is the last node
-    if (node->getNext() == nullptr) {
+  if (node->getStudent()->id == id) {
+    //if it is the only node
+    if (node == hashtable[index] && node->getNext() == nullptr) {
       delete node;
-      hashtable[(int)(node->getStudent()->gpa) * (size/5)] = nullptr;
+      hashtable[index] = nullptr;
     }
 
     //if there are nodes after it
     else {
-      hashtable[(int)(node->getStudent()->gpa) * (size/5)] = node->getNext();
+      hashtable[index] = node->getNext();
       delete node;
     }
     
     deleted = true;
     return deleted;
   }
-  
+
+  //if the next student matches the id to delete
   else if (node->getNext()->getStudent()->id == id) {
-     //if it is the last node
+    //if it is the last node
     if (node->getNext()->getNext() == nullptr) {
       delete node->getNext();
       node->setNext(nullptr);
@@ -283,12 +292,8 @@ bool deleteNode(Node** hashtable, int id, Node* node, int size) {
     return deleted;
   }
 
-  else if (node->getNext()->getNext()->getStudent()->id == id) {
-    delete node->getNext()->getNext();
-    node->getNext()->setNext(nullptr);
-    
-    deleted = true;
-    return deleted;
+  else {
+    deleted = deleteNode(hashtable, id, node->getNext(), index);
   }
   
   return deleted;

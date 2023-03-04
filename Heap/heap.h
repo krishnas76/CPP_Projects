@@ -13,7 +13,8 @@ class Heap {
 
   //functions
   void add(int i);
-  int removeMax();
+  void removeMax();
+  void reheap(int i);
   int removeAll();
 
   //variables

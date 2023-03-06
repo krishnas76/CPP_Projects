@@ -13,10 +13,10 @@ class Heap {
 
   //functions
   void add(int i);
-  void removeMax();
+  int removeMax();
   void reheap(int i);
-  int removeAll();
-
+  void print(int index, int space);
+  
   //variables
   int* array;
   int size;

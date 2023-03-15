@@ -8,18 +8,30 @@
 
 using namespace std;
 
+int order(char a);
+
 int main() {
   //user command loop
   while(true) {
 
     //take user input
-    cout << "Type \"ADD\", \"PRINT\", \"DELETE\", \"AVERAGE\", or \"QUIT\"" << endl;
+    cout << "Write a mathematic expression with spaces in between each character:" << endl;
     char input[81];
     cin.getline(input, 80, '\n'); //take in user command
 
-    //add
-    if (strcmp(input, "ADD") == 0) {
-      addStudent(head);
+    //translate to postfix
+    LinkedList* stack = new LinkedList();
+    LinkedList* queue = new LinkedList();
+    for(int i=0; i < 2*(sizeof(input)/sizeof(input[0])); i++) {
+      if (strcmp(input[i],'+') == 0 || strcmp(input[i],'-') == 0 || strcmp(input[i],'*') == 0 || strcmp(input[i],'/') == 0 || strcmp(input[i],'^') == 0 || strcmp(input[i],'(') == 0) {
+	Node* operation = new Node(input[i]);
+	if (order(operation)>order(stack->peek())) {
+	  stack->push(operation);
+	}
+	else {
+	  
+	}
+      }
     }
   }
   return 0;

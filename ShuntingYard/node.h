@@ -25,6 +25,8 @@ class Node {
   //variables
   char data;
   Node* next;
+  Node* left;
+  Node* right;
 };
 
 #endif

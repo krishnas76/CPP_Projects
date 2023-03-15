@@ -14,6 +14,8 @@ Node::Node() {
 Node::Node(char input) {
   data = input;
   next = nullptr;
+  left = nullptr;
+  right = nullptr
 }
 
 //functions
@@ -32,4 +34,6 @@ void Node::setNext(Node* newnext) {
 //destructor
 Node::~Node() {
   next = nullptr;
+  left = nullptr;
+  right = nullptr;
 }

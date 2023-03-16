@@ -7,7 +7,7 @@ using namespace std;
 
 //constructors
 Node::Node() {
-  data = '\0'
+  data = '\0';
   next = nullptr;
 }
 
@@ -15,7 +15,7 @@ Node::Node(char input) {
   data = input;
   next = nullptr;
   left = nullptr;
-  right = nullptr
+  right = nullptr;
 }
 
 //functions
@@ -23,7 +23,7 @@ Node* Node::getNext() {
   return next;
 }
 
-Student* Node::getData() {
+char Node::getData() {
   return data;
 }
 

@@ -29,7 +29,7 @@ bool LinkedList::pop() {
   return true;
 }
 
-Node* LinkedList::peak() {
+Node* LinkedList::peek() {
   return head;
 }
 
@@ -44,21 +44,23 @@ void LinkedList::enqueue(Node* node) {
   }
 }
 
-bool LinkedList::dequeue() {
+char LinkedList::dequeue() {
   if (head == nullptr) {
-    return false;
+    return '\0';
   }
   if (head == tail) {
+    char data = head->data;
     Node* temp = tail;
     tail = nullptr;
     delete temp;
-    Node* temp = head;
+    Node* temp2 = head;
     head = nullptr;
-    delete head;
-    return true;
+    delete temp2;
+    return data;
   }
+  char data = head->data;
   Node* temp = head;
   head = head->getNext();
   delete temp;
-  return true;
+  return data;
 }

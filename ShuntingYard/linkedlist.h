@@ -15,9 +15,9 @@ class LinkedList {
   //functions
   void push(Node* node);
   bool pop();
-  Node* peak();
+  Node* peek();
   void enqueue(Node* node);
-  bool dequeue();
+  char dequeue();
 
  private:
   //variables

@@ -5,34 +5,66 @@
 
 #include <bits/stdc++.h>
 #include "node.h"
+#include "linkedlist.h"
 
 using namespace std;
 
 int order(char a);
 
 int main() {
-  //user command loop
-  while(true) {
-
     //take user input
-    cout << "Write a mathematic expression with spaces in between each character:" << endl;
+    cout << "Write a mathematic expression with only single digit numbers and spaces in between each character:" << endl;
     char input[81];
     cin.getline(input, 80, '\n'); //take in user command
-
     //translate to postfix
     LinkedList* stack = new LinkedList();
     LinkedList* queue = new LinkedList();
-    for(int i=0; i < 2*(sizeof(input)/sizeof(input[0])); i++) {
-      if (strcmp(input[i],'+') == 0 || strcmp(input[i],'-') == 0 || strcmp(input[i],'*') == 0 || strcmp(input[i],'/') == 0 || strcmp(input[i],'^') == 0 || strcmp(input[i],'(') == 0) {
+    int count = sizeof(input)/sizeof(input[0]);
+    for(int i=0; i < 2*count; i++) {
+      if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || input[i] == '^' || input[i] == '(') {
 	Node* operation = new Node(input[i]);
-	if (order(operation)>order(stack->peek())) {
+	if (operation->data == ')') {
+	  while (stack->peek()->data != '(') {
+	    queue->enqueue(stack->peek());
+	    stack->pop();
+	  }
+	  stack->pop();
+	}
+	else if (order(operation->data)>=order(stack->peek()->data)) {
 	  stack->push(operation);
 	}
 	else {
-	  
+	  queue->enqueue(stack->peek());
+	  stack->pop();
 	}
       }
+      else if (isdigit(input[i])) {
+	Node* number = new Node(input[i]);
+	queue->enqueue(number);
+      }
     }
-  }
+    char a;
+    for (int i =0; i<count; i++) {
+      a = queue->dequeue();
+      cout << a;
+    }
   return 0;
+}
+
+int order(char a) {
+  if (a == '+' || a == '-') {
+    return 1;
+  }
+  else if (a == '*' || a == '/') {
+    return 2;
+  }
+  else if (a == '^') {
+    return 3;
+  }
+  else if (a == '(') {
+    return 4;
+  }
+  else {
+    return 0;
+  }
 }

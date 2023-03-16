@@ -2,8 +2,10 @@
  *Author: Krishna Srikanth
  *Date:
  */
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstring>
+#include <vector>
+//#include <bits/stdc++.h>
 #include "node.h"
 #include "linkedlist.h"
 
@@ -12,42 +14,44 @@ using namespace std;
 int order(char a);
 
 int main() {
-    //take user input
-    cout << "Write a mathematic expression with only single digit numbers and spaces in between each character:" << endl;
-    char input[81];
-    cin.getline(input, 80, '\n'); //take in user command
-    //translate to postfix
-    LinkedList* stack = new LinkedList();
-    LinkedList* queue = new LinkedList();
-    int count = sizeof(input)/sizeof(input[0]);
-    for(int i=0; i < 2*count; i++) {
-      if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || input[i] == '^' || input[i] == '(') {
-	Node* operation = new Node(input[i]);
-	if (operation->data == ')') {
-	  while (stack->peek()->data != '(') {
-	    queue->enqueue(stack->peek());
-	    stack->pop();
-	  }
-	  stack->pop();
-	}
-	else if (order(operation->data)>=order(stack->peek()->data)) {
-	  stack->push(operation);
-	}
-	else {
+  //take user input
+  cout << "Write a mathematic expression with only single digit numbers and spaces in between each character:" << endl;
+  char input[81];
+  cin.get(input, 80); //take in user command
+  cin.get();
+  //translate to postfix
+  LinkedList* stack = new LinkedList();
+  LinkedList* queue = new LinkedList();
+  //int count = sizeof(input)/sizeof(input[0]);
+  for(int i=0; i < 80; i++) {
+    if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || input[i] == '^' || input[i] == '(') {
+      Node* operation = new Node(input[i]);
+      if (operation->data == ')') {
+	while (stack->peek()->data != '(') {
 	  queue->enqueue(stack->peek());
 	  stack->pop();
 	}
+	stack->pop();
       }
-      else if (isdigit(input[i])) {
-	Node* number = new Node(input[i]);
-	queue->enqueue(number);
+      else if (order(operation->data)>=order(stack->peek()->data)) {
+	cout << "a";
+	stack->push(operation);
+      }
+      else {
+	queue->enqueue(stack->peek());
+	stack->pop();
       }
     }
-    char a;
-    for (int i =0; i<count; i++) {
-      a = queue->dequeue();
-      cout << a;
+    else if (isdigit(input[i])) {
+      Node* number = new Node(input[i]);
+      queue->enqueue(number);
     }
+  }
+  char a;
+  for (int i =0; i<80; i++) {
+    a = queue->dequeue();
+    cout << a;
+  }
   return 0;
 }
 

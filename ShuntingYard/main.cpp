@@ -23,7 +23,7 @@ int main() {
   LinkedList* stack = new LinkedList();
   LinkedList* queue = new LinkedList();
   int count = 0;
-  for(int i=0; i < 79; i++) {
+  for(int i=0; i < 80; i++) {
     if (isdigit(input[i])) {
       Node* number = new Node(input[i]);
       queue->enqueue(number);

@@ -17,14 +17,13 @@ int main() {
   //take user input
   cout << "Write a mathematic expression with only single digit numbers and spaces in between each character:" << endl;
   char input[81];
-  cin.get(input, 80); //take in user command
-  cin.get();
+  cin.getline(input, 80, '\n'); //take in user command
   cout << input << endl;
   //translate to postfix
   LinkedList* stack = new LinkedList();
   LinkedList* queue = new LinkedList();
   int count = 0;
-  for(int i=0; i < 80; i++) {
+  for(int i=0; i < 79; i++) {
     if (isdigit(input[i])) {
       Node* number = new Node(input[i]);
       queue->enqueue(number);

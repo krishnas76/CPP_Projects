@@ -23,9 +23,9 @@ bool LinkedList::pop() {
   if (head == nullptr) {
     return false;
   }
-  Node* temp = head;
+  //Node* temp = head;
   head = head->getNext();
-  delete temp;
+  //delete temp;
   return true;
 }
 

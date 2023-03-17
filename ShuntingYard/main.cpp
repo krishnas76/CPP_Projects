@@ -19,39 +19,84 @@ int main() {
   char input[81];
   cin.get(input, 80); //take in user command
   cin.get();
+  cout << input << endl;
   //translate to postfix
   LinkedList* stack = new LinkedList();
   LinkedList* queue = new LinkedList();
-  //int count = sizeof(input)/sizeof(input[0]);
+  int count = 0;
   for(int i=0; i < 80; i++) {
-    if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || input[i] == '^' || input[i] == '(') {
-      Node* operation = new Node(input[i]);
-      if (operation->data == ')') {
-	while (stack->peek()->data != '(') {
-	  queue->enqueue(stack->peek());
-	  stack->pop();
-	}
-	stack->pop();
-      }
-      else if (order(operation->data)>=order(stack->peek()->data)) {
-	cout << "a";
-	stack->push(operation);
-      }
-      else {
-	queue->enqueue(stack->peek());
-	stack->pop();
-      }
-    }
-    else if (isdigit(input[i])) {
+    if (isdigit(input[i])) {
       Node* number = new Node(input[i]);
       queue->enqueue(number);
+      count++;
+    }
+
+    else if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || input[i] == '^') {
+      Node* operation = new Node(input[i]);
+      while (stack->peek() != nullptr && stack->peek()->getData() != '(' && order(stack->peek()->getData()) >= order(input[i])) {
+	queue->enqueue(stack->peek());
+	count++;
+	stack->pop();
+      }
+      stack->push(operation);
+    }
+    else if (input[i] == '(') {
+      Node* operation = new Node(input[i]);
+      stack->push(operation);
+    }
+    
+    else if (input[i] == ')') {
+      Node* operation = new Node(input[i]);
+      while (stack->peek() != nullptr && stack->peek()->getData() != '(') {
+	queue->enqueue(stack->peek());
+        count++;
+        stack->pop();
+      }
+      if (stack->peek() != nullptr && stack->peek()->getData() == '(') {
+	stack->pop();
+      }
     }
   }
-  char a;
-  for (int i =0; i<80; i++) {
-    a = queue->dequeue();
-    cout << a;
+  
+  while (stack->peek() != nullptr) {
+    if (stack->peek()->getData() != '(') {
+      queue->enqueue(stack->peek());
+      count++;
+      stack->pop();
+    }
   }
+  
+  cout << "done w queue" << endl;
+
+  for (int i = 0; i < count; i++) {
+    Node* node = queue->dequeue();
+    cout << node->data;
+  }
+  cout << endl;
+  /*
+  cout << queue->head->data << queue->head->next->data << queue->head->next->next->data << queue->head->next->next->next->data << endl;
+  LinkedList* queue2 = queue;
+  while (queue2->dequeue() != nullptr) {
+    cout << queue->dequeue()->data;
+  }
+  */
+  /*
+  bool removed = true;
+  cout << queue->peek()->data << endl;
+  while (queue->peek() != nullptr) {
+    cout << queue->peek()->data;
+    removed = queue->dequeue();
+  }
+  cout << endl;
+  */
+  /*
+  Node* current = queue->head;
+  while (current  != nullptr) {
+    cout << current->data;
+    current = current->next;
+  }
+  cout << endl;
+  */
   return 0;
 }
 

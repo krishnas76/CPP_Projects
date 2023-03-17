@@ -44,23 +44,23 @@ void LinkedList::enqueue(Node* node) {
   }
 }
 
-char LinkedList::dequeue() {
+Node* LinkedList::dequeue() {
   if (head == nullptr) {
-    return '\0';
+    return nullptr;
   }
   if (head == tail) {
-    char data = head->data;
-    Node* temp = tail;
+    Node* node = head;
+    //Node* temp = tail;
     tail = nullptr;
-    delete temp;
-    Node* temp2 = head;
+    //delete temp;
+    //Node* temp2 = head;
     head = nullptr;
-    delete temp2;
-    return data;
+    //delete temp2;
+    return node;
   }
-  char data = head->data;
-  Node* temp = head;
+  Node* node = head;
+  //Node* temp = head;
   head = head->getNext();
-  delete temp;
-  return data;
+  //delete temp;
+  return node;
 }

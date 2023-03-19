@@ -10,9 +10,11 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::push(Node* node) {
+  //if head is null, set head to node
   if (head == nullptr) {
     head = node;
   }
+  //else, set the node as the new head
   else {
     node->setNext(head);
     head = node;
@@ -20,12 +22,12 @@ void LinkedList::push(Node* node) {
 }
 
 bool LinkedList::pop() {
+  //if stack is empty, return false
   if (head == nullptr) {
     return false;
   }
-  //Node* temp = head;
+  //if not, set head as next
   head = head->getNext();
-  //delete temp;
   return true;
 }
 
@@ -34,10 +36,12 @@ Node* LinkedList::peek() {
 }
 
 void LinkedList::enqueue(Node* node) {
+  //if queue empty, set head and tail to be node
   if (head == nullptr) {
     head = node;
     tail = node;
   }
+  //if not, add node to end of queue
   else {
     tail->setNext(node);
     tail = node;
@@ -45,22 +49,19 @@ void LinkedList::enqueue(Node* node) {
 }
 
 Node* LinkedList::dequeue() {
+  //if queue empty, return nullptr
   if (head == nullptr) {
     return nullptr;
   }
+  //if queue has one element, remove that element and return it
   if (head == tail) {
     Node* node = head;
-    //Node* temp = tail;
     tail = nullptr;
-    //delete temp;
-    //Node* temp2 = head;
     head = nullptr;
-    //delete temp2;
     return node;
   }
+  //if queue has more than one element, remove first element and return it
   Node* node = head;
-  //Node* temp = head;
   head = head->getNext();
-  //delete temp;
   return node;
 }

@@ -19,7 +19,7 @@ class LinkedList {
   void enqueue(Node* node);
   Node* dequeue();
 
-  // private:
+ private: 
   //variables
   Node* head;
   Node* tail;

@@ -9,6 +9,8 @@ using namespace std;
 Node::Node() {
   data = '\0';
   next = nullptr;
+  left = nullptr;
+  right = nullptr;
 }
 
 Node::Node(char input) {

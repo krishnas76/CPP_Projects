@@ -2,6 +2,7 @@
 #include <cstring>
 
 #include "node.h"
+#include <limits.h>
 
 using namespace std;
 

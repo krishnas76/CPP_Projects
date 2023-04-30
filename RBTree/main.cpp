@@ -10,14 +10,17 @@
 #include <iomanip>
 #include <algorithm>
 #include "node.h"
+#include <fstream>
 
 using namespace std;
 
 //function prototypes
-void add(Node* tree, int num);
+Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool lr);
 void print(Node* tree, int space);
 bool search(Node* tree, int num);
 Node* del(Node* tree, int num);
+Node* leftrotate(Node* node);
+Node* rightrotate(Node* node);
 
 int main() {
   cout << "This is a Red-Black Tree." << endl;
@@ -32,38 +35,47 @@ int main() {
     cin.getline(input, 80, '\n'); //take in user command
 
     if (strcmp(input, "add") == 0) {
-      //take in number of numbers
-      int count;
-      cout << "How many numbers would you like to add?" << endl;
-      cin >> count;
+      //take in number
+      int number;
+      cout << "Enter a number to add: " << endl;
+      cin >> number;
       cin.ignore(50, '\n');
-      int newnumbers[count];
-      //take in numbers separated by spaces                                                  
-      cout << "Enter your numbers separated by spaces: " << endl;
-      for (int i = 0; i < count; i++) {
-	cin >> newnumbers[i];
+      //if tree is empty                                                                            
+      if (tree->data == INT_MIN) {
+	tree->data = number;
+	strcpy(tree->color, "black");
       }
-      cin.ignore(50, '\n');
+      else {
+	tree = add(tree, tree, number, false, false, false, false);
+      }
+    }
       //add all numbers to tree
-      for (int i = 0; i < count; i++) {
-	add(tree, newnumbers[i]);
-      }
+      add(tree, number);
     }
 
     else if (strcmp(input, "read") == 0) {
-      //take in number to remove
-      cout << "Enter a number to remove:" << endl;
-      int number;
-      cin >> number;
-      cin.ignore(50, '\n');
-      //if number exists, remove it
-      if (search(tree, number)) {
-	del(tree, number);
-        cout << number << " removed from tree." << endl;
+      //take in numbers from file
+      int numbers[100];
+      int count = 0;
+      cout << "Enter file name:" << endl;
+      char filename[81];
+      cin.getline(filename, 80, '\n');
+      ifstream numberfile(filename);
+      for (int i = 0; i < 100; i++) {
+	if (numberfile.eof()) {
+	  break;
+	}
+	numberfile >> numbers[i];
+	count++;
       }
-      //if number doesn't exist
-      else {
-        cout << number << " not found in tree." << endl;
+      for (int i = 0; i < count; i++) {
+	if (tree->data == INT_MIN) {
+	  tree->data = number;
+	  strcpy(tree->color, "black");
+	}
+	else {
+	  tree = add(tree, tree, number, false, false, false, false);
+	}
       }
     }
 
@@ -86,31 +98,114 @@ int main() {
   return 0;
 }
 
-void add(Node* tree, int num) {
-  //if num greater than tree value
-  if (num > tree->data) {
-    //if no right child, make a right child
-    if (tree->right == nullptr) {
-      Node* node = new Node(num);
-      tree->right = node;
-    }
-    //if there is right child, add to that child
-    else {
-      add(tree->right, num);
+Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool lr) {
+  bool 2red = false;
+  if (tree == nullptr) {
+    return (new Node(num));
+  }
+  //if num greater than or equal to tree value
+  else if (num >= tree->data) {
+    tree->right = add(tree->right, root, num, right, left, rl, lr);
+    tree->right->parent = tree;
+    if (tree != root) {
+      if (strcmp(tree->color, "red") == 0 && strcmp(tree->right->color, "red") == 0) {
+	2red = true;
+      }
     }
   }
-  //num less than or equal to tree value
+  //num less than tree value
   else {
-    //if no left child, make a left child
-    if (tree->left == nullptr) {
-      Node* node = new Node(num);
-      tree->left = node;
-    }
-    //if there is left child, add to that child
-    else {
-      add(tree->left, num);
+    tree->left = add(tree->left, root, num, right, left, rl, lr);
+    tree->left->parent = tree;
+    if (tree != root) {
+      if (strcmp(tree->color, "red") == 0 && strcmp(tree->left->color, "red") == 0) {
+	2red = true;
+      }
     }
   }
+  //rotations
+  if (right) {
+    tree = rightrotate(tree);
+    strcpy(tree->color, "black");
+    strcpy(tree->right->color, "red");
+    right = false;
+  }
+  if (left) {
+    tree = leftrotate(tree);
+    strcpy(tree->color, "black");
+    strcpy(tree->left->color, "red");
+    left = false;
+  }
+  if (rl) {
+    tree->right = rightrotate(tree->right);
+    tree->right->parent = tree;
+    tree = leftrotate(tree);
+    strcpy(tree->color, "black");
+    strcpy(tree->left->color, "red");
+    rl = false;
+  }
+  if (lr) {
+    tree->left = leftrotate(tree->left);
+    tree->left->parent = tree;
+    tree = rightrotate(tree);
+    strcpy(tree->color, "black");
+    strcpy(tree->right->color, "red");
+    lr = false;
+  }
+  //2 reds case
+  if (2red) {
+    //if current node is a right child
+    if (tree->parent->right == tree) {
+      //if sibling is black
+      if (tree->parent->left == nullptr || strcmp(tree->parent->left->color, "black") == 0) {
+	//if left child is red
+	if (tree->left != nullptr && strcmp(tree->left->color, "red") == 0) {
+	  rl = true;
+	}
+	//if right child is red
+	else if (tree->right != nullptr && strcmp(tree->right->color, "red") == 0) {
+	  left = true;
+	}
+      }
+      //if sibling is red
+      else {
+	strcpy(tree->parent->left->color, "black");
+	strcpy(tree->color, "black");
+	if(root.parent!=this.root)
+	  root.parent.colour = 'R';
+      }
+    }
+    //if current node is a left child
+    else {
+
+    }
+    2red = false;
+  }
+  return tree;
+}
+
+Node* leftrotate(Node* node) {
+  Node* right = node->right;
+  Node* lright = right->left;
+  right->left = node;
+  node->right = lright;
+  node->parent = right;
+  if (lright != nullptr) {
+    lright->parent = node;
+  }
+  return right;
+}
+
+Node* rightrotate(Node* node) {
+  Node* left = node->left;
+  Node* rleft = left->right;
+  left->right = node;
+  node->left = rleft;
+  node->parent = left;
+  if (rleft != nullptr) {
+    rleft->parent = node;
+  }
+  return left;
 }
 
 void print(Node* tree, int space) {

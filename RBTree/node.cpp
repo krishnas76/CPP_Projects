@@ -31,4 +31,5 @@ Node::Node(int input) {
 Node::~Node() {
   left = nullptr;
   right = nullptr;
+  parent = nullptr;
 }

@@ -10,23 +10,19 @@
 #include <iomanip>
 #include <algorithm>
 #include "node.h"
+#include "RBT.h"
 #include <fstream>
 
 using namespace std;
 
 //function prototypes
-Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool lr);
 void print(Node* tree, int space);
-bool search(Node* tree, int num);
-Node* del(Node* tree, int num);
-Node* leftrotate(Node* node);
-Node* rightrotate(Node* node);
 
 int main() {
   cout << "This is a Red-Black Tree." << endl;
   
   //make tree
-  Node* tree = new Node();
+  RBT* tree = new RBT();
   
   //user command loop
   while (true) {
@@ -40,14 +36,7 @@ int main() {
       cout << "Enter a number to add: " << endl;
       cin >> number;
       cin.ignore(50, '\n');
-      //if tree is empty                                                                            
-      if (tree->data == INT_MIN) {
-	tree->data = number;
-	strcpy(tree->color, "black");
-      }
-      else {
-	tree = add(tree, tree, number, false, false, false, false);
-      }
+      tree->insert(number);
     }
 
     else if (strcmp(input, "read") == 0) {
@@ -66,19 +55,13 @@ int main() {
 	count++;
       }
       for (int i = 0; i < count; i++) {
-	if (tree->data == INT_MIN) {
-	  tree->data = numbers[i];
-	  strcpy(tree->color, "black");
-	}
-	else {
-	  tree = add(tree, tree, numbers[i], false, false, false, false);
-	}
+	tree->insert(numbers[i]);
       }
     }
 
     else if (strcmp(input, "print") == 0) {
       //print tree
-      print(tree, 0);
+      print(tree->root, 0);
     }
 
     //quit
@@ -93,30 +76,6 @@ int main() {
   }
 
   return 0;
-}
-
-Node* leftrotate(Node* node) {
-  Node* right = node->right;
-  Node* lright = right->left;
-  right->left = node;
-  node->right = lright;
-  node->parent = right;
-  if (lright != nullptr) {
-    lright->parent = node;
-  }
-  return right;
-}
-
-Node* rightrotate(Node* node) {
-  Node* left = node->left;
-  Node* rleft = left->right;
-  left->right = node;
-  node->left = rleft;
-  node->parent = left;
-  if (rleft != nullptr) {
-    rleft->parent = node;
-  }
-  return left;
 }
 
 void print(Node* tree, int space) {
@@ -134,3 +93,4 @@ void print(Node* tree, int space) {
     print(tree->left, space);
   }
 }
+

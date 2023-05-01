@@ -11,7 +11,10 @@ using namespace std;
 class RBT {
  public:
   RBT();
-  void add(Node* tree, int data);
+  void insert(int data);
+  Node* add(Node* tree, int data);
+  Node* leftrotate(Node* node);
+  Node* rightrotate(Node* node);
   Node* root;
   bool left;
   bool right;

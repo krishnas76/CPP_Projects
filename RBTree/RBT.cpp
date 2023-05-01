@@ -101,8 +101,9 @@ Node* RBT::add(Node* tree, int data) {
       else {
 	strcpy(tree->parent->left->color, "black");
 	strcpy(tree->color, "black");
-	if (tree->parent != root)
+	if (tree->parent != root) {
 	  strcpy(tree->parent->color, "red");
+	}
       }
     }
     //if current node is a left child
@@ -122,8 +123,9 @@ Node* RBT::add(Node* tree, int data) {
       else {
         strcpy(tree->parent->right->color, "black");
         strcpy(tree->color, "black");
-        if (tree->parent != root)
+        if (tree->parent != root) {
           strcpy(tree->parent->color, "red");
+	}
       }
     }
     twored = false;

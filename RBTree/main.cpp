@@ -49,9 +49,6 @@ int main() {
 	tree = add(tree, tree, number, false, false, false, false);
       }
     }
-      //add all numbers to tree
-      add(tree, number);
-    }
 
     else if (strcmp(input, "read") == 0) {
       //take in numbers from file
@@ -70,11 +67,11 @@ int main() {
       }
       for (int i = 0; i < count; i++) {
 	if (tree->data == INT_MIN) {
-	  tree->data = number;
+	  tree->data = numbers[i];
 	  strcpy(tree->color, "black");
 	}
 	else {
-	  tree = add(tree, tree, number, false, false, false, false);
+	  tree = add(tree, tree, numbers[i], false, false, false, false);
 	}
       }
     }
@@ -99,7 +96,7 @@ int main() {
 }
 
 Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool lr) {
-  bool 2red = false;
+  bool twored = false;
   if (tree == nullptr) {
     return (new Node(num));
   }
@@ -109,7 +106,8 @@ Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool 
     tree->right->parent = tree;
     if (tree != root) {
       if (strcmp(tree->color, "red") == 0 && strcmp(tree->right->color, "red") == 0) {
-	2red = true;
+	twored = true;
+	cout << "twored" << endl;
       }
     }
   }
@@ -119,7 +117,8 @@ Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool 
     tree->left->parent = tree;
     if (tree != root) {
       if (strcmp(tree->color, "red") == 0 && strcmp(tree->left->color, "red") == 0) {
-	2red = true;
+	twored = true;
+	cout << "twored" << endl;
       }
     }
   }
@@ -153,7 +152,7 @@ Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool 
     lr = false;
   }
   //2 reds case
-  if (2red) {
+  if (twored) {
     //if current node is a right child
     if (tree->parent->right == tree) {
       //if sibling is black
@@ -171,15 +170,34 @@ Node* add(Node* tree, Node* root, int num, bool right, bool left, bool rl, bool 
       else {
 	strcpy(tree->parent->left->color, "black");
 	strcpy(tree->color, "black");
-	if(root.parent!=this.root)
-	  root.parent.colour = 'R';
+	if(tree->parent != root) {
+	  strcpy(tree->parent->color, "red");
+	}
       }
     }
     //if current node is a left child
     else {
-
+      //if sibling is black
+      if (tree->parent->right == nullptr || strcmp(tree->parent->right->color, "black") == 0) {
+	//if left child is red
+	if (tree->left != nullptr && strcmp(tree->left->color, "red") == 0) {
+          right = true;
+        }
+        //if right child is red                                                                      
+        else if (tree->right != nullptr && strcmp(tree->right->color, "red") == 0) {
+          lr = true;
+        }
+      }
+      //if sibling is red
+      else {
+        strcpy(tree->parent->right->color, "black");
+        strcpy(tree->color, "black");
+        if(tree->parent != root) {
+          strcpy(tree->parent->color, "red");
+        }
+      }
     }
-    2red = false;
+    twored = false;
   }
   return tree;
 }

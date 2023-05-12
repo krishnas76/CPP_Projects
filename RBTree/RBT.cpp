@@ -50,21 +50,18 @@ Node* RBT::add(Node* tree, int data) {
   }
   //rotations
   if (right) {
-    cout << "right" << endl;
     tree = rightrotate(tree);
     strcpy(tree->color, "black");
     strcpy(tree->right->color, "red");
     right = false;
   }
   if (left) {
-    cout << "left" << endl;
     tree = leftrotate(tree);
     strcpy(tree->color, "black");
     strcpy(tree->left->color, "red");
     left = false;
   }
   if (rl) {
-    cout << "rl" << endl;
     tree->right = rightrotate(tree->right);
     tree->right->parent = tree;
     tree = leftrotate(tree);
@@ -73,7 +70,6 @@ Node* RBT::add(Node* tree, int data) {
     rl = false;
   }
   if (lr) {
-    cout << "lr" << endl;
     tree->left = leftrotate(tree->left);
     tree->left->parent = tree;
     tree = rightrotate(tree);
@@ -83,7 +79,6 @@ Node* RBT::add(Node* tree, int data) {
   }
   //2 reds case
   if (twored) {
-    cout << "twored" << endl;
     //if current node is a right child
     if (tree->parent->right == tree) {
       //if sibling is black

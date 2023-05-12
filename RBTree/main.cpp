@@ -55,7 +55,9 @@ int main() {
 	count++;
       }
       for (int i = 0; i < count; i++) {
-	tree->insert(numbers[i]);
+	if (numbers[i] > 0) {
+	  tree->insert(numbers[i]);
+	}
       }
     }
 

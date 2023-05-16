@@ -26,7 +26,7 @@ int main() {
   
   //user command loop
   while (true) {
-    cout << "Type \"add\", \"read\", or \"print\". Type \"q\" to quit." << endl;
+    cout << "Type \"add\", \"read\", \"search\", \"delete\", or \"print\". Type \"q\" to quit." << endl;
     char input[81];
     cin.getline(input, 80, '\n'); //take in user command
 
@@ -61,6 +61,38 @@ int main() {
       }
     }
 
+    else if (strcmp(input, "search") == 0) {
+      //take in number to search
+      cout << "Enter a number to search for:" << endl;
+      int number;
+      cin >> number;
+      cin.ignore(50, '\n');
+      //if number not found
+      if (tree->search(number) == nullptr || tree->search(number)->data != number) {
+	cout << number << " not found in tree." << endl;
+      }
+      //number found
+      else {
+	cout << number << " found in tree." << endl;
+      }
+    }
+
+    else if (strcmp(input, "delete") == 0) {
+      //take in number to delete
+      cout << "Enter a number to delete:" << endl;
+      int number;
+      cin >> number;
+      cin.ignore(50, '\n');
+      //if number not found
+      if (tree->search(number) == nullptr || tree->search(number)->data != number) {
+        cout << number << " not found in tree." << endl;
+      }
+      //if number is found, delete it
+      else {
+        tree->del(tree->search(number));
+      }
+    }
+    
     else if (strcmp(input, "print") == 0) {
       //print tree
       print(tree->root, 0);

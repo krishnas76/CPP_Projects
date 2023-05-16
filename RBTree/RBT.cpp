@@ -151,3 +151,119 @@ Node* RBT::rightrotate(Node* node) {
   }
   return left;
 }
+
+Node* RBT::search(int num) {
+  Node* current = root;
+  while (current != nullptr) {
+    //if number is found
+    if (num == current->data) {
+      break;
+    }
+    //if number is less than current's number, go left
+    else if (num < current->data) {
+      if (current->left == nullptr) {
+	break;
+      }
+      else {
+	current = current->left;
+      }
+    }
+    //if number is greater than current's number, go right
+    else {
+      if (current->right == nullptr) {
+	break;
+      }
+      else {
+	current = current->right;
+      }
+    }
+  }
+  return current;
+}
+
+void RBT::del(Node* node) {
+  Node* replace = new Node();
+  //node has two children
+  if (node->left != nullptr && node->right != nullptr) {
+    replace = node->right;
+    while (replace->left != nullptr) {
+      replace = replace->left;
+    }
+  }
+  //node is leaf
+  else if (node->left == nullptr && node->right == nullptr) {
+    replace = nullptr;
+  }
+  //node has right child
+  else if (node->right != nullptr) {
+    replace = node->right;
+  }
+  //node has left child
+  else {
+    replace = node->left;
+  }
+
+  //if node is leaf
+  if (replace == nullptr) {
+    if (node == root) {
+      root = nullptr;
+    }
+    else {
+      //two black
+      if (strcmp(node->color, "black") == 0) {
+	//FIX DOUBLE BLACK
+      }
+      else {
+	Node* sibling = new Node();
+	if (node->parent->left == node) {
+	  sibling = node->parent->right;
+	}
+	else {
+	  sibling = node->parent->left;
+	}
+	if (sibling != nullptr) {
+	  strcpy(sibling->color, "red");
+	}
+      }
+      if (node->parent->left == node)	{
+	node->parent->left = nullptr;
+      }
+      else {
+	node->parent->right = nullptr;
+      }
+    }
+    delete node;
+  }
+  //if node has one child
+  else if (node->left == nullptr || node->right == nullptr) {
+    if (node == root) {
+      node->data = replace->data;
+      node->left = nullptr;
+      node->right = nullptr;
+      delete replace;
+    }
+    else {
+      if (node->parent->left == node)   {
+	node->parent->left = replace;
+      }
+      else {
+	node->parent->right = replace;
+      }
+      replace->parent = node->parent;
+      if (strcmp(node->color,"black") == 0 && strcmp(replace->color,"black") == 0) {
+	//FIX DOUBLE BLACK
+      }
+      else {
+	strcpy(replace->color, "black");
+      }
+      delete node;
+    }
+  }
+  //if node has two children
+  else {
+    int temp = node->data;
+    node->data = replace->data;
+    replace->data = temp;
+    del(replace);
+  }
+}

@@ -15,6 +15,8 @@ class RBT {
   Node* add(Node* tree, int data);
   Node* leftrotate(Node* node);
   Node* rightrotate(Node* node);
+  Node* search(int num);
+  void del(Node* node);
   Node* root;
   bool left;
   bool right;

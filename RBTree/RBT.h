@@ -17,6 +17,9 @@ class RBT {
   Node* rightrotate(Node* node);
   Node* search(int num);
   void del(Node* node);
+  void fixtwoblack(Node* node);
+  void delleftrotate(Node* node);
+  void delrightrotate(Node* node);
   Node* root;
   bool left;
   bool right;

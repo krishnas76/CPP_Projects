@@ -211,7 +211,7 @@ void RBT::del(Node* node) {
     else {
       //two black
       if (strcmp(node->color, "black") == 0) {
-	//FIX DOUBLE BLACK
+	fixtwoblack(node);
       }
       else {
 	Node* sibling = new Node();
@@ -251,7 +251,7 @@ void RBT::del(Node* node) {
       }
       replace->parent = node->parent;
       if (strcmp(node->color,"black") == 0 && strcmp(replace->color,"black") == 0) {
-	//FIX DOUBLE BLACK
+	fixtwoblack(replace);
       }
       else {
 	strcpy(replace->color, "black");
@@ -266,4 +266,93 @@ void RBT::del(Node* node) {
     replace->data = temp;
     del(replace);
   }
+}
+
+void RBT::fixtwoblack(Node* node) {
+  //at root, nothing needs to be fixed
+  if (node == root) {
+    return;
+  }
+  //set sibling
+  Node* sibling = new Node();
+  if (node->parent->left == node) {
+    sibling = node->parent->right;
+  }
+  else {
+    sibling = node->parent->left;
+  }
+  //if no sibling
+  if (sibling == nullptr) {
+    fixtwoblack(node->parent);
+  }
+  else {
+    //if sibling is red
+    if (strcmp(sibling->color,"red") == 0) {
+      strcpy(node->parent->color,"red");
+      strcpy(sibling->color,"black");
+      if (sibling->parent->left == sibling) {
+	delrightrotate(node->parent);
+      }
+      else {
+	delleftrotate(node->parent);
+      }
+      fixtwoblack(node);
+    }
+    //if sibling is black
+    else {
+      //if sibling has red child
+      if ((sibling->left != nullptr && strcmp(sibling->left->color,"red") == 0) ||
+	  (sibling->right != nullptr && strcmp(sibling->right->color,"red") == 0)) {
+	//sibling's left child is red
+	if (sibling->left != nullptr && strcmp(sibling->left->color,"red") == 0) {
+	  //sibling is a left child
+	  if (sibling->parent->left == sibling) {
+	    strcpy(sibling->left->color, sibling->color);
+	    strcpy(sibling->color, node->parent->color);
+	    delrightrotate(node->parent);
+	  }
+	  //sibling is a right child
+	  else {
+	    strcpy(sibling->left->color, node->parent->color);
+	    delrightrotate(sibling);
+	    delleftrotate(node->parent);
+	  }
+	}
+	//sibling's right child is red
+	else {
+	  //sibling is a left child
+	  if (sibling->parent->left == sibling) {
+            strcpy(sibling->right->color, node->parent->color);
+            delleftrotate(sibling);
+            delrightrotate(node->parent);
+          }
+          //sibling is a right child 
+          else {
+            strcpy(sibling->right->color, sibling->color);
+            strcpy(sibling->color, node->parent->color);
+            delleftrotate(node->parent);
+          }
+	}
+	strcpy(node->parent->color, "black");
+      }
+      //sibling has no red children
+      else {
+	strcpy(sibling->color, "red");
+	if (strcmp(node->parent->color, "black") == 0) {
+	  fixtwoblack(node->parent);
+	}
+	else {
+	  strcpy(node->parent->color, "black");
+	}
+      }
+    }
+  }
+}
+
+void RBT::delleftrotate(Node* node) {
+
+}
+
+void RBT::delrightrotate(Node* node) {
+
 }

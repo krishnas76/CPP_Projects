@@ -350,9 +350,45 @@ void RBT::fixtwoblack(Node* node) {
 }
 
 void RBT::delleftrotate(Node* node) {
-
+  Node* right = node->right;
+  if (node == root) {
+    root = right;
+  }
+  if (node->parent != nullptr) {
+    if (node->parent->left == node) {
+      node->parent->left = right;
+    }
+    else {
+      node->parent->right = right;
+    }
+  }
+  right->parent = node->parent;
+  node->parent = right;
+  node->right = right->left;
+  if (right->left != nullptr) {
+    right->left->parent = node;
+  }
+  right->left = node;
 }
 
 void RBT::delrightrotate(Node* node) {
-
+  Node* left = node->left;
+  if (node == root) {
+    root = left;
+  }
+  if (node->parent != nullptr) {
+    if (node->parent->left == node) {
+      node->parent->left = left;
+    }
+    else {
+      node->parent->right = left;
+    }
+  }
+  left->parent = node->parent;
+  node->parent = left;
+  node->left = left->right;
+  if (left->right != nullptr) {
+    left->right->parent	= node;
+  }
+  left->right =	node;
 }
